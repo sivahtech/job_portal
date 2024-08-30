@@ -73,8 +73,13 @@ class JobController extends Controller
     public function getJobs($request, $limit = '')
     {
         DB::enableQueryLog();
-
-        $jobs  =  Job::where('status', true);
+        $userId = Auth::id();
+        $jobs  =  Job::where('jobs.status', true)
+            ->leftJoin('applied_jobs', function ($join) use ($userId) {
+                $join->on('jobs.id', '=', 'applied_jobs.job_id')
+                    ->where('applied_jobs.user_id', '=', $userId);
+            })
+            ->select('jobs.*', 'applied_jobs.id as user_applied');
         $jobs->when($request->title, function ($query) use ($request) {
             $query->where('title', 'LIKE', '%' . $request->title . '%');
         });
@@ -133,10 +138,10 @@ class JobController extends Controller
 
     private function getJobData()
     {
-        $data['job_types'] = JobType::all();
-        $data['job_categories'] = JobCategory::all();
-        $data['job_roles'] = JobRole::all();
-        $data['job_industries'] = JobIndustry::all();
+        $data['job_types'] = JobType::where('status', 1)->get();
+        $data['job_categories'] = JobCategory::where('status', 1)->get();
+        $data['job_roles'] = JobRole::where('status', 1)->get();
+        $data['job_industries'] = JobIndustry::where('status', 1)->get();
 
         return $data;
     }
@@ -390,7 +395,7 @@ class JobController extends Controller
                     $query->where(function ($q) use ($type) {
                         $q->orWhereJsonContains('job_type', $type);
                     });
-                })->paginate(10);
+                })->withCount('applied')->paginate(10);
             return view('front.pages.my-jobs', ['data' => $data]);
         }
     }

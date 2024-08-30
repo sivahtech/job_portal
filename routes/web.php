@@ -40,6 +40,7 @@ Route::get('job-details/{id}', [JobController::class, 'jobDetails'])->name('job.
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::get('/settings', [UserController::class, 'settings'])->name('settings');
+    Route::get('/download-resume', [UserController::class, 'getDownload'])->name('download.resume');
 
     Route::post('/profile', [UserController::class, 'completeProfile'])->name('profile.post');
     Route::post('update-profile', [UserController::class, 'updateProfile'])->name('profile.update');
@@ -53,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('update-job/{jobId}', [JobController::class, 'updateJobs'])->name('job.update');
     Route::get('myjob-details/{id}', [JobController::class, 'myJobDetails'])->name('myjob.details');
 
-    Route::get('resume/{userId}', [UserController::class, 'resume'])->name('resume');
+    Route::get('resume/{userId}/{jobId?}', [UserController::class, 'resume'])->name('resume');
 
 
     Route::post('store-job', [JobController::class, 'store'])->name('job.store');
@@ -85,10 +86,13 @@ Route::prefix('admin')->group(function () {
 
     Route::post('create-role', [ContentController::class, 'createRole'])->name('create.role');
     Route::get('get-role', [ContentController::class, 'getRole'])->name('get.role');
+    Route::get('delete-role/{id}', [ContentController::class, 'deleteRole'])->name('delete.role');
 
     Route::post('create-type', [ContentController::class, 'createType'])->name('create.type');
     Route::get('get-type', [ContentController::class, 'getType'])->name('get.type');
+    Route::get('delete-type/{id}', [ContentController::class, 'deleteType'])->name('delete.type');
 
     Route::post('create-industry', [ContentController::class, 'createIndustry'])->name('create.industry');
     Route::get('get-industry', [ContentController::class, 'getIndustry'])->name('get.industry');
+    Route::get('delete-industry/{id}', [ContentController::class, 'deleteIndustry'])->name('delete.industry');
 });

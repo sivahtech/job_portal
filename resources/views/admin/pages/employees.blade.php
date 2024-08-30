@@ -7,7 +7,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Employees Details Table</h4>
-                </p>
+                </p> 
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>

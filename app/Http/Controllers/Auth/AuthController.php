@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate as FacadesGate;
 use Illuminate\Support\Facades\Redirect;
- 
+
 class AuthController extends Controller
 {
     #--- load index blade file ---#
@@ -52,7 +52,7 @@ class AuthController extends Controller
         ]);
 
         try {
-            if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => ['company', 'employee']], $request->remember)) {
                 // dd(Auth::user());
                 // if (Auth::user()->role === 'company') {
                 //     dd(Auth::user());

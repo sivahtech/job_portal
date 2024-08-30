@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileCompleteRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\AppliedJob;
 use App\Models\EmpResume;
 use App\Models\EmpSkill;
 use App\Models\JobIndustry;
@@ -12,10 +13,14 @@ use App\Models\Qualification;
 use App\Models\User;
 use App\Traits\ImageTrait;
 use Exception;
+use Illuminate\Http\Client\Response as ClientResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -42,7 +47,7 @@ class UserController extends Controller
         abort(404);
     }
 
-    
+
 
     #---- Profile completed ----#
     public function completeProfile(ProfileCompleteRequest $request)
@@ -140,9 +145,34 @@ class UserController extends Controller
         }
     }
 
-    #--- RESUME PAGE ---#
-    public function resume($userId)
+    #--- Resume  Page ---#
+    public function resume($userId, $jobId = '')
     {
-        dd($userId);
+      
+         $userId = Crypt::decrypt($userId);
+        if ($jobId) {
+             $jobId = Crypt::decrypt($jobId);
+            $resume = AppliedJob::select('*', 'resume as file')->where(['user_id' => $userId, 'job_id' => $jobId])->whereNotNull('resume')->first();
+            if (empty($resume)) {
+                $resume =  EmpResume::where('user_id', $userId)->first();
+            }
+        } else {
+            $resume =  EmpResume::where('user_id', $userId)->first();
+        }
+        
+        return view('front.pages.resume', ['resume' => $resume]);
+    }
+
+    public function getDownload(Request $request)
+    {
+        if ($request->file) {
+            $file = $request->file;
+            $headers = array(
+                'Content-Type: application/pdf',
+            );
+            if (Storage::exists($file)) {
+                return Storage::download($file, 'resume.pdf', $headers);
+            }
+        }
     }
 }

@@ -94,7 +94,7 @@
                         </div>
                     </div>
                     <div class="bottom">
-                        <a href="{{ route('resume',['userId'=>Crypt::encrypt($user->id)]) }}" class="button">Resume</a>
+                        <a href="{{ route('resume',['userId'=>Crypt::encrypt($user->user->id),'jobId'=>Crypt::encrypt($job->id)]) }}" class="button">Resume</a>
                     </div>
                 </div>
                 @empty

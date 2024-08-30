@@ -11,41 +11,44 @@
                  @endguest
 
                  @can('employee')
-                 <li>
-                     <a href="#">Jobs</a>
-                     <ul class="sub-menu">
-                         <li><a href="{{ route('applied.jobs') }}">Applied Jobs</a></li>
-                         <li><a href="{{ route('find.jobs') }}">Find a job</a></li>
-                     </ul>
-                 </li>
+                 <li><a href="{{ route('find.jobs') }}">Find a job</a></li>
                  @endcan
 
                  @can('company')
 
                  <li class=""><a href="{{ route('find.candidates') }}">Find Candidate</a></li>
-                 <li>
-                     <a href="#">Jobs</a>
-                     <ul class="sub-menu">
-                         <li><a href="{{ route('my.job') }}">My Jobs</a></li>
-                         <li><a href="{{ route('post.job') }}">Post a job</a></li>
-                     </ul>
-                 </li>
+                 <li><a href="{{ route('post.job') }}">Post a job</a></li>
+
                  @endcan
 
                  <li><a href="#">contact</a></li>
-                 @auth
-                    <li><a href="{{ route('settings') }}">settings</a></li>
-                 @endauth
              </ul>
          </div>
 
-         <div class="col">
+         <div class="col three">
              @guest
              <a href="{{ route('login') }}" class="button-alt">Log In</a>
              <a href="{{ route('register') }}" class="button">Register</a>
              @endguest
              @auth
-             <a href="{{ route('logout') }}" class="button">Logout</a>
+             <ul class="menu profile">
+                 <li>
+                     <a href="#"><img src="{{ asset('assets/admin/images/faces/face1.jpg') }}" class="profile-pic"></a>
+                     <ul class="sub-menu profiles">
+                         <li class="name">
+                             <h5>John Doe</h5>
+                         </li>
+                         <li><a href="{{ route('settings') }}">Profile Setting</a></li>
+                         @can('company')
+                         <li><a href="{{ route('my.job') }}">My Jobs</a></li>
+                         @endcan
+                         @can('employee')
+                         <li><a href="{{ route('applied.jobs') }}">Applied Jobs</a></li>
+                         @endcan
+                         <li> <a href="{{ route('logout') }}">Logout</a></li>
+                     </ul>
+                 </li>
+             </ul>
              @endauth
          </div>
      </div>
