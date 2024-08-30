@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('job_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->tinyInteger('status')->default(1)->comment('1->active');
+            $table->tinyInteger('status')->default(1)->comment('1->active 2->deleted' );
             $table->timestamps();
         });
     }

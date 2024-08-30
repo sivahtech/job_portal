@@ -6,14 +6,18 @@ use Illuminate\View\Component;
 
 class JobFeed extends Component
 {
+    public $data;
+    public $type = 1;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data, $type = 1)
     {
-        //
+        $this->data = $data;
+        $this->type = $type;
     }
 
     /**
@@ -23,6 +27,6 @@ class JobFeed extends Component
      */
     public function render()
     {
-        return view('components.job-feed');
+        return view('components.job-feed', ['jobs' => $this->data, 'viewType' => $this->type]);
     }
 }

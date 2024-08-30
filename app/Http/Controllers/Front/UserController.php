@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfileCompleteRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\EmpResume;
 use App\Models\EmpSkill;
+use App\Models\JobIndustry;
+use App\Models\Qualification;
 use App\Models\User;
 use App\Traits\ImageTrait;
 use Exception;
@@ -20,41 +24,39 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         if (Gate::allows('profile_status')) {
-            return view('front.auth.profile_complete');
+            $data['job_industries'] = JobIndustry::all();
+            $data['qualifications'] = Qualification::all();
+            return view('front.auth.profile_complete', ['data' => $data]);
+        }
+        abort(403);
+    }
+
+    public function settings(Request $request)
+    {
+        if (Gate::allowIf(['company', 'employee'])) {
+            $user = User::with(['skills', 'country', 'state', 'city'])->find(Auth::id());
+            $data['job_industries'] = JobIndustry::all();
+            $data['qualifications'] = Qualification::all();
+            return view('front.pages.setings', ['user' => $user, 'data' => $data]);
         }
         abort(404);
     }
 
-    protected function validationRules($role)
-    {
-        $rules = [
-            'phone' => 'required|integer',
-            'image' => 'required|image|mimes:jpeg,png|max:2048',
-            'country' => 'required',
-            'state' => 'required',
-            'city' => 'required',
-        ];
-
-        if ($role === 'employee') {
-            $rules['exp'] = 'required';
-            $rules['skills'] = 'required';
-            $rules['resume'] = 'required|mimes:pdf|max:2048';
-        }
-
-        return $rules;
-    }
+    
 
     #---- Profile completed ----#
-    public function completeProfile(Request $request)
+    public function completeProfile(ProfileCompleteRequest $request)
     {
-        $request->validate($this->validationRules(Auth::user()->role));
         DB::beginTransaction();
         try {
             $user = User::find(Auth::id());
             $user->phone = $request->phone;
-            $user->country = $request->country;
-            $user->state = $request->state;
-            $user->city = $request->city;
+            $user->country_id = $request->country;
+            $user->state_id = $request->state;
+            $user->city_id = $request->city;
+            $user->profile = $request->profile;
+            $user->industry_id = $request->industry;
+            $user->qualifications = json_encode($request->qualification);
             if ($request->exp) {
                 $user->exp = $request->exp;
             }
@@ -66,7 +68,7 @@ class UserController extends Controller
             $user->save();
 
             if ($request->file('resume')) {
-                $resume = $this->uploadMedia($request->file('image'), 'resumes');
+                $resume = $this->uploadMedia($request->file('resume'), 'resumes');
                 $empResume = new EmpResume();
                 $empResume->file = $resume;
                 $empResume->user_id = Auth::id();
@@ -88,5 +90,59 @@ class UserController extends Controller
             dd($e);
             return redirect()->back()->with(['error', 'Something went wrong']);
         }
+    }
+
+    #--- update Profile --#
+    public function updateProfile(ProfileUpdateRequest $request)
+    {
+        try {
+            $user = User::find(Auth::id());
+            $user->phone = $request->phone;
+            $user->country_id = $request->country;
+            $user->state_id = $request->state;
+            $user->city_id = $request->city;
+            if (Auth::user()->role == 'employee') {
+                $user->profile = $request->profile;
+                $user->industry_id = $request->industry;
+                $user->qualifications = json_encode($request->qualification);
+                $user->exp = $request->exp;
+            }
+            if (Auth::user()->role == 'company') {
+                $user->company_name = $request->company_name;
+                $user->company_type = $request->company_type;
+            }
+
+            if ($request->file('image')) {
+                $image = $this->resizeImage($request->file('image'));
+                $user->image = $image;
+            }
+            $user->save();
+
+            if ($request->file('resume')) {
+                $resume = $this->uploadMedia($request->file('resume'), 'resumes');
+                $empResume = EmpResume::where('user_id', Auth::id())->first();
+                $empResume->file = $resume;
+                $empResume->save();
+            }
+
+            if ($request->skills) {
+                foreach ($request->skills as $skill) {
+                    $empSkill = new EmpSkill();
+                    $empSkill->user_id = Auth::id();
+                    $empSkill->name = $skill;
+                    $empSkill->save();
+                }
+            }
+            return redirect()->back()->with(['success' => 'Profile Update']);
+        } catch (Exception $e) {
+            dd($e);
+            return redirect()->back()->with(['error', 'Something went wrong']);
+        }
+    }
+
+    #--- RESUME PAGE ---#
+    public function resume($userId)
+    {
+        dd($userId);
     }
 }

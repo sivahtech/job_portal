@@ -20,9 +20,10 @@ class DatabaseSeeder extends Seeder
             JobIndustrySeeder::class,
             JobRoleSeeder::class,
             JobTypeSeeder::class,
+            QualificationSeeder::class,
             CountriesTableSeeder::class,
             StatesTableSeeder::class,
-            CitiesTableSeeder::class
+            CitiesTableSeeder::class,
         ]);
     }
 }

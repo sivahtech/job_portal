@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,5 +29,12 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('profile_status', function (User $user) {
             return $user->is_porfile_completed == 0;
         });
+        Gate::define('employee', function (User $user) {
+            return $user->role == 'employee';
+        });
+        Gate::define('company', function (User $user) {
+            return $user->role == 'company';
+        });
+        Paginator::defaultView('vendor.pagination.bootstrap-5');
     }
 }

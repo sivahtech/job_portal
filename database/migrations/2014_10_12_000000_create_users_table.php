@@ -29,9 +29,9 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('company_type')->nullable();
             $table->boolean('is_porfile_completed')->default(false);
-            $table->string('country')->nullable();
-            $table->string('state')->nullable();
-            $table->string('city')->nullable();
+            $table->integer('country_id')->nullable();
+            $table->integer('state_id')->nullable();
+            $table->integer('city_id')->nullable();
             $table->string('phone')->nullable();
             $table->string('exp')->nullable();
             $table->rememberToken();

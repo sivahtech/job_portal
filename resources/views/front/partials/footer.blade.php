@@ -1,11 +1,21 @@
 <footer>
     <div class="container">
         <ul class="footer-menu">
-            <li><a href="home.html">home</a></li>
-            <li><a href="jobs.html">find a job</a></li>
-            <li><a href="post-job.html">find a Candidate</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="register.html">Register</a></li>
+            <li><a href="{{ route('index') }}">home</a></li>
+            @can('employee')
+            <li><a href="{{ route('find.jobs') }}">Find a job</a></li>
+            @endcan
+
+            @can('company')
+
+            <li class=""><a href="{{ route('find.candidates') }}">Find Candidate</a></li>
+            <li><a href="{{ route('post.job') }}">Post a job</a></li>
+            @endcan
+
+            @guest
+            <li><a href="{{ route('login') }}">Login</a></li>
+            <li><a href="{{ route('register') }}">Register</a></li>
+            @endguest
         </ul>
     </div>
 

@@ -2,10 +2,12 @@
 
 namespace App\View\Components;
 
+use App\Models\JobCategory as ModelsJobCategory;
 use Illuminate\View\Component;
 
 class JobCategory extends Component
 {
+    public $categories;
     /**
      * Create a new component instance.
      *
@@ -13,7 +15,7 @@ class JobCategory extends Component
      */
     public function __construct()
     {
-        //
+        $this->categories = ModelsJobCategory::withCount('jobs')->get();
     }
 
     /**
@@ -23,6 +25,6 @@ class JobCategory extends Component
      */
     public function render()
     {
-        return view('components.job-category');
+        return view('components.job-category', ['categories' => $this->categories]);
     }
 }

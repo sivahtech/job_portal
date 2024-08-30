@@ -3,12 +3,45 @@
 <section class="register profile">
     <div class="container">
         <div class="title">
-            <h2>Profile <span class="alt-text">Complete</span></h2>
+            <h2>Profile <span class="alt-text">Complete</span></h2> 
         </div>
         <div class="tabs-content">
             <div class="flex tab-cards active" id="category-two">
-                <form method="POST" class="register-form" action="{{ route('profile') }}" id="registration-form" enctype="multipart/form-data" autocomplete="off">
+                <form method="POST" class="register-form" action="{{ route('profile') }}" id="registration-form" enctype="multipart/form-data" autocomplete="off" novalidate>
                     @csrf
+                    @can('employee')
+                    <div class="inline">
+                        <div class="form-group">
+                            <label for="profile">Job Profile</label>
+                            <div class="adv-input">
+                                <i class="fa fa-list"></i>
+                                <input type="text" id="profile" name="profile" class="form-input @error('profile') is-invalid @enderror" placeholder="Job profile" value="{{ old('profile') }}" required>
+                            </div>
+                            @error('profile')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="inline">
+                        <div class="form-group">
+                            <label for="industry">Industry</label>
+                            <div class="adv-input">
+                                <i class="fa fa-clock-o"></i>
+                                <select name="industry" id="industry" class="form-input">
+                                    <option value="" selected disabled>Select job Industry</option>
+                                    @forelse($data['job_industries'] as $key => $value)
+                                    <option value="{{ $value->id }}" {{ $value->id == old('industry')?'selected':'' }}>{{ $value->name }}</option>
+                                    @empty
+                                    <option value="" selected disabled>Select job Industry</option>
+                                    @endforelse
+                                </select>
+                            </div>
+                            @error('industry')
+                            <p>{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    @endcan
                     <div class="inline">
                         <div class="form-group">
                             <div>
@@ -69,7 +102,23 @@
                             @enderror
                         </div>
                     </div>
-                    @if(Auth::user()->role === 'employee')
+                    @can('employee')
+                    <div class="inline">
+                        <div class="form-group">
+                            <label for="qualification">Qualification</label>
+                            <div class="adv-input">
+                                <i class="fa fa-list"></i>
+                                <select name="qualification[]" id="qualification" class="form-input @error('qualification') is-invalid @enderror" required multiple>
+                                    @foreach ($data['qualifications'] as $value )
+                                    <option value="{{ $value->name }}" {{ in_array($value->name , old('qualification',[]))?'selected':""  }}>{{ $value->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('qualification')
+                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="inline">
                         <div class="form-group">
                             <label for="exp">Experience</label>
@@ -81,15 +130,19 @@
                             <span class="invalid-feedback" role="alert">{{ $message }}</span>
                             @enderror
                         </div>
-                    </div>
+                    </div> 
                     <div class="inline">
                         <div class="form-group">
                             <label for="skills">Skills</label>
                             <div class="adv-input">
                                 <i class="fa fa-list"></i>
                                 <select name="skills[]" id="skills" class="form-input @error('skills') is-invalid @enderror" required multiple>
-                                    @foreach (config('job.skills') as $type )
-                                    <option value="{{ $type }}" {{ $type == old('skills') ?'selected':''  }}>{{ $type }}</option>
+                                    @foreach (config('job.skills') as $key => $type )
+                                    <optgroup label="{{ $key }}">
+                                        @foreach ($type as $value )
+                                        <option value="{{ $value }}" {{ in_array($value , old('skills',[]))?'selected':""  }}>{{ $value }}</option>
+                                        @endforeach
+                                    </optgroup>
                                     @endforeach
                                 </select>
                             </div>
@@ -110,7 +163,7 @@
                             @enderror
                         </div>
                     </div>
-                    @endif
+                    @endcan
 
                     <div class="form-group form-submit">
                         <input type="submit" class="button" value="Complete">
@@ -129,6 +182,9 @@
     $(document).ready(function() {
         $('#skills').select2({
             placeholder: 'Select your skills'
+        });
+        $('#qualification').select2({
+            placeholder: 'Select your qualifications'
         });
 
 

@@ -3,21 +3,31 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\JobController;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\State;
+use App\Models\User;
 use Exception;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate as FacadesGate;
 use Illuminate\Support\Facades\Redirect;
-
+ 
 class AuthController extends Controller
 {
     #--- load index blade file ---#
-    public function index()
+    public function index(Request $request)
     {
-        return view('front.pages.index');
+        $jobs = new JobController();
+        $data = $jobs->getJobs($request, 4);
+        if (FacadesGate::allows('company')) {
+            $data = $jobs->getEmp($request, 4);
+            return view('front.pages.index', ['data' => $data]);
+        }
+        return view('front.pages.index', ['jobs' => $data]);
     }
 
     #---- load login blade file ----#
@@ -40,16 +50,18 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required'
         ]);
+
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
                 // dd(Auth::user());
                 // if (Auth::user()->role === 'company') {
                 //     dd(Auth::user());
                 // }
-                // if (Auth::user()->role === 'employee') {
-                //     dd(Auth::user());
-                // }
-                return redirect()->route('index');
+                if (Auth::user()->is_porfile_completed) {
+                    return redirect()->route('index');
+                } else {
+                    return redirect()->route('profile');
+                }
             }
             return Redirect::back()->with(['error' => 'Credentials not matched.']);
         } catch (Exception $e) {

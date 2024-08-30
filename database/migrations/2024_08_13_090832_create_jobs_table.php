@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->comment('comapny_id');
             $table->string('title')->nullable();
-            $table->bigInteger('job_type')->nullable()->comment('id of job type');
+            $table->json('job_type')->nullable();
+            $table->json('qualification')->nullable();
             $table->bigInteger('job_category')->nullable()->comment('id of job category');
             $table->bigInteger('job_role')->nullable()->comment('id of job role');
             $table->bigInteger('job_industry')->nullable()->comment('id of job industry');
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('salary')->nullable();
             $table->string('salary_type')->nullable();
-            $table->string('qualifications')->nullable();
+            $table->string('experience')->nullable();
             $table->longText('description')->nullable();
             $table->dateTimeTz('deadline')->nullable();
             $table->tinyInteger('status')->default(1)->comment('1->active/published 2->inactive');

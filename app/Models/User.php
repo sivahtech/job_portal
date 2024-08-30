@@ -40,5 +40,29 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'qualification' => 'array'
     ];
+
+    public function country()
+    {
+        return $this->hasOne(Country::class, 'id', 'country_id');
+    }
+    public function state()
+    {
+        return $this->hasOne(State::class, 'id', 'state_id');
+    }
+    public function city()
+    {
+        return $this->hasOne(City::class, 'id', 'city_id');
+    }
+
+    public function skills()
+    {
+        return $this->hasMany(EmpSkill::class, 'user_id', 'id');
+    }
+
+    public function job()
+    {
+      return  $this->hasMany(Job::class, 'user_id', 'id');
+    }
 }

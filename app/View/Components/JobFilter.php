@@ -16,13 +16,9 @@ class JobFilter extends Component
      * @return void
      */
     public $data;
-    public function __construct()
+    public function __construct($data)
     {
-
-        $this->data['job_types'] = JobType::all();
-        $this->data['job_categories'] = JobCategory::all();
-        $this->data['job_roles'] = JobRole::all();
-        $this->data['job_industries'] = JobIndustry::all();
+        $this->data = $data;
     }
 
     /**
