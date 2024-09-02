@@ -56,7 +56,7 @@
 
         <div class="job-cards" id="job_crd">
             @forelse ($data['jobs'] as $key =>$value)
-            @php
+            @php 
             $job = $value->job;
             @endphp
             @if($job)
@@ -79,6 +79,11 @@
                             <li><i class="fa fa-clock-o"></i>Deadline: {{ $carbon->parse($job->deadline)->format('d M , Y') }}</li>
                         </ul>
                     </div>
+                    @can('employee')
+                    <div class="total_resume">
+                        <div class="compny_job_btn"><span>{{ $job->status == 1 ?'Active':'Deleted or Expired' }}</span></div>
+                    </div>
+                    @endcan
                 </div>
                 <div class="bottom">
                     <ul class="timeline">

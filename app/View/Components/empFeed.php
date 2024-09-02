@@ -1,7 +1,7 @@
 <?php
 
 namespace App\View\Components;
-
+ 
 use Illuminate\View\Component;
 
 class empFeed extends Component

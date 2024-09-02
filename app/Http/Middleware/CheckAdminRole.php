@@ -1,4 +1,4 @@
- <?php
+<?php
 
 namespace App\Http\Middleware;
 
@@ -16,10 +16,10 @@ class CheckAdminRole
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {
+    {   
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }
-        return redirect()->route('login');
+        return redirect()->route('admin.login');
     }
 }

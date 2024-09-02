@@ -1,7 +1,12 @@
  <header>
      <div class="container flex">
          <div class="col">
+             @if(Auth::check() && (auth()->user()->role == 'employee' || auth()->user()->role == 'company'))
              <a href="{{ route('index') }}"><img src="{{ asset('assets/images/logo.png') }}" class="logo"></a>
+             @endif
+             @can('admin')
+             <a href="{{ route('admin.dashboard') }}"><img src="{{ asset('assets/images/logo.png') }}" class="logo"></a>
+             @endcan
          </div>
          <div class="col">
              <ul class="menu">

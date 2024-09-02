@@ -14,6 +14,7 @@ use App\Models\JobType;
 use App\Models\Qualification;
 use App\Models\State;
 use App\Models\User;
+use App\Traits\CommonTrait;
 use App\Traits\ImageTrait;
 use Exception;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ use PhpParser\Node\Stmt\Catch_;
 
 class JobController extends Controller
 {
-    use ImageTrait;
+    use ImageTrait, CommonTrait;
 
     #-- find candidates blade file ---#
     public function findCandidates(Request $request)
@@ -67,7 +68,7 @@ class JobController extends Controller
         if ($limit) {
             return $emp->with(['skills'])->limit($limit)->inRandomOrder()->get();
         }
-        return $emp->with(['skills'])->paginate(2)->appends($request->query());
+        return $emp->with(['skills'])->paginate(6)->appends($request->query());
     }
 
     public function getJobs($request, $limit = '')
@@ -121,14 +122,26 @@ class JobController extends Controller
             $query->whereIn('job_role', $roles);
         });
         $jobs->when($request->salary, function ($query) use ($request) {
-            $query->where('max_salary', '<=', $request->salary)
-                ->orwhere('salary', '<=', $request->salary);
+            $query->where(function ($q) use ($request) {
+                $q->where(function ($q) use ($request) {
+                    // Case 1: Salary is fixed and matches the provided salary
+                    $q->whereColumn('salary', 'max_salary')
+                        ->where('salary', '<=', (int)$request->salary);
+                })
+                    ->orWhere(function ($q) use ($request) {
+                        // Case 2: Salary is within a range and falls below or equal to the provided salary
+                        $q->where('salary', '<=', (int)$request->salary)
+                            ->where('max_salary', '>=', (int)$request->salary);
+                    });
+            });
         });
+
         $jobs = $jobs->with(['role', 'industry', 'category']);
         if ($limit) {
-            return  $jobs->limit($limit)->inRandomOrder()->get();
+            return    $jobs->limit($limit)->inRandomOrder()->get();
         }
-        return  $jobs->paginate(2)->appends($request->query());
+        return $jobs->paginate(6)->appends($request->query());
+        dd(DB::getQueryLog());
     }
 
     public function getJob($id)
@@ -136,7 +149,7 @@ class JobController extends Controller
         return Job::where('id', $id)->with(['role', 'industry', 'category'])->first();
     }
 
-    private function getJobData()
+    public function getJobData()
     {
         $data['job_types'] = JobType::where('status', 1)->get();
         $data['job_categories'] = JobCategory::where('status', 1)->get();
@@ -250,19 +263,6 @@ class JobController extends Controller
     }
 
 
-    function getLocation($request)
-    {
-        if ($request->location == 'current_location') {
-            $location = $this->getCity(Auth::user()->city_id) . ',' . $this->getState(Auth::user()->state_id) . ',' . $this->getCountry(Auth::user()->country_id);
-        }
-
-        if ($request->location == 'other_location') {
-            $location = $this->getCity($request->city) . ',' . $this->getState($request->state) . ',' . $this->getCountry($request->country);
-        }
-        return trim($location, ',');
-    }
-
-
     function getSalary($request)
     {
         if ($request->salary_type == 'range') {
@@ -274,22 +274,6 @@ class JobController extends Controller
         return $salary;
     }
 
-
-    function getCountry($id)
-    {
-        $country =   Country::find($id);
-        return $country ? $country->name : '';
-    }
-    function getState($id)
-    {
-        $state = State::find($id);
-        return $state ? $state->name : '';
-    }
-    function getCity($id)
-    {
-        $city =  City::find($id);
-        return $city ? $city->name : '';
-    }
 
     /**
      * Display the specified resource.

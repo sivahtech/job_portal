@@ -37,7 +37,7 @@ Route::get('get-states/', [AuthController::class, 'getStates'])->name('state');
 Route::get('get-cities/', [AuthController::class, 'getCities'])->name('city');
 Route::get('job-details/{id}', [JobController::class, 'jobDetails'])->name('job.details');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'user.check'])->group(function () {
     Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::get('/settings', [UserController::class, 'settings'])->name('settings');
     Route::get('/download-resume', [UserController::class, 'getDownload'])->name('download.resume');
@@ -64,35 +64,51 @@ Route::middleware(['auth'])->group(function () {
 
 #-- admin routes ---#
 Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.login');
     Route::get('logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::post('/login', [AdminController::class, 'checkAuth'])->name('admin.login.post');
 
-    Route::get('/', [AdminController::class, 'index'])->name('admin.login');
-    Route::get('/companies', [AdminController::class, 'company'])->name('admin.company');
-    Route::get('/employees', [AdminController::class, 'employees'])->name('admin.employees');
-    Route::get('/jobs', [AdminController::class, 'jobs'])->name('admin.jobs');
+    Route::middleware('admin.check')->group(function () {
+        Route::get('/companies', [AdminController::class, 'company'])->name('admin.company');
+        Route::get('/employees', [AdminController::class, 'employees'])->name('admin.employees');
+        Route::get('/jobs', [AdminController::class, 'jobs'])->name('admin.jobs');
 
-    Route::get('/jobs-categories', [AdminController::class, 'jobsCategory'])->name('jobs.category');
-    Route::get('/jobs-roles', [AdminController::class, 'jobsRoles'])->name('jobs.roles');
-    Route::get('/jobs-types', [AdminController::class, 'jobsTypes'])->name('jobs.types');
-    Route::get('/jobs-industries', [AdminController::class, 'jobsIndustry'])->name('jobs.industries');
+        Route::get('/jobs-categories', [AdminController::class, 'jobsCategory'])->name('jobs.category');
+        Route::get('/jobs-roles', [AdminController::class, 'jobsRoles'])->name('jobs.roles');
+        Route::get('/jobs-types', [AdminController::class, 'jobsTypes'])->name('jobs.types');
+        Route::get('/jobs-industries', [AdminController::class, 'jobsIndustry'])->name('jobs.industries');
 
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
 
-    Route::post('create-category', [ContentController::class, 'createCategory'])->name('create.category');
-    Route::get('get-category', [ContentController::class, 'getCategory'])->name('get.category');
-    Route::get('delete-category/{id}', [ContentController::class, 'deleteCategory'])->name('delete.category');
+        Route::post('create-category', [ContentController::class, 'createCategory'])->name('create.category');
+        Route::get('get-category', [ContentController::class, 'getCategory'])->name('get.category');
+        Route::get('delete-category/{id}', [ContentController::class, 'deleteCategory'])->name('delete.category');
 
-    Route::post('create-role', [ContentController::class, 'createRole'])->name('create.role');
-    Route::get('get-role', [ContentController::class, 'getRole'])->name('get.role');
-    Route::get('delete-role/{id}', [ContentController::class, 'deleteRole'])->name('delete.role');
+        Route::post('create-role', [ContentController::class, 'createRole'])->name('create.role');
+        Route::get('get-role', [ContentController::class, 'getRole'])->name('get.role');
+        Route::get('delete-role/{id}', [ContentController::class, 'deleteRole'])->name('delete.role');
 
-    Route::post('create-type', [ContentController::class, 'createType'])->name('create.type');
-    Route::get('get-type', [ContentController::class, 'getType'])->name('get.type');
-    Route::get('delete-type/{id}', [ContentController::class, 'deleteType'])->name('delete.type');
+        Route::post('create-type', [ContentController::class, 'createType'])->name('create.type');
+        Route::get('get-type', [ContentController::class, 'getType'])->name('get.type');
+        Route::get('delete-type/{id}', [ContentController::class, 'deleteType'])->name('delete.type');
 
-    Route::post('create-industry', [ContentController::class, 'createIndustry'])->name('create.industry');
-    Route::get('get-industry', [ContentController::class, 'getIndustry'])->name('get.industry');
-    Route::get('delete-industry/{id}', [ContentController::class, 'deleteIndustry'])->name('delete.industry');
+        Route::post('create-industry', [ContentController::class, 'createIndustry'])->name('create.industry');
+        Route::get('get-industry', [ContentController::class, 'getIndustry'])->name('get.industry');
+        Route::get('delete-industry/{id}', [ContentController::class, 'deleteIndustry'])->name('delete.industry');
+
+        Route::post('create-company', [ContentController::class, 'createCompany'])->name('create.company');
+        Route::get('create-company', [ContentController::class, 'company'])->name('admin.create.company');
+        Route::get('edit-company/{id}', [ContentController::class, 'editCompany'])->name('edit.company');
+        Route::get('delete-company/{id}', [ContentController::class, 'deleteCompany'])->name('delete.company');
+
+        Route::post('create-employee', [ContentController::class, 'createEmployee'])->name('create.employee');
+        Route::get('create-employee', [ContentController::class, 'employee'])->name('admin.create.employee');
+        Route::get('edit-employee/{id}', [ContentController::class, 'editEmployee'])->name('edit.employee');
+        Route::get('delete-employee/{id}', [ContentController::class, 'deleteEmployee'])->name('delete.employee');
+
+        Route::put('update-job/{jobId}', [ContentController::class, 'updateJob'])->name('update.job');
+        Route::get('edit-job/{id}', [ContentController::class, 'editJob'])->name('edit.job');
+        Route::get('delete-job/{id}', [ContentController::class, 'deleteJob'])->name('delete.job');
+    });
 });

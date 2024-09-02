@@ -94,19 +94,28 @@
         jobSalary = urlRangeValue;
     } else {
         rangeInput.value = rangeInput.min;
-        currentValueDisplay.textContent = rangeInput.min;
+        if (rangeInput.min == 0) {
+            currentValueDisplay.textContent = '--';
+        } else {
+            currentValueDisplay.textContent = rangeInput.min;
+        }
         jobSalary = rangeInput.min;
     }
-
-
     rangeInput.addEventListener('input', function() {
-        currentValueDisplay.textContent = this.value;
+        if (this.value != 0) {
+            currentValueDisplay.textContent = this.value;
+        } else {
+            currentValueDisplay.textContent = '--';
+        }
         jobSalary = this.value;
-
         updateURLParams();
-        setTimeout(() => {
-            getJobs();
-        }, 2000);
+    });
+    rangeInput.addEventListener('change', function() {
+        if (this.value != 0) {
+            currentValueDisplay.textContent = this.value;
+        }
+        jobSalary = this.value;
+        getJobs();
     });
 
     // Function to update the URL parameters
@@ -135,10 +144,15 @@
             url.searchParams.delete('category');
         }
         if (jobSalary) {
-            url.searchParams.set('salary', jobSalary);
+            if (jobSalary == '0') {
+                url.searchParams.delete('salary');
+            } else {
+                url.searchParams.set('salary', jobSalary);
+            }
         } else {
             url.searchParams.delete('salary');
         }
+
         if (Page) {
             url.searchParams.set('page', Page);
         } else {
@@ -150,7 +164,6 @@
 
 
     function getJobs() {
-
         $('#jobs-wrap').html(`<div class="image-wrapper loader-img">
                 <img src="{{ asset('assets/loader.gif') }}" alt="Centered Image">
             </div>`);
@@ -168,7 +181,6 @@
                 , page: Page
             }
             , success: function(result) {
-
                 if (result.status == 200) {
                     $('#jobs-wrap').html(result.data);
                     $('#paginationLinks').html(result.pagination);

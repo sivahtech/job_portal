@@ -20,6 +20,10 @@ class CheckUserRole
         if (Auth::check() && (Auth::user()->role === 'company' || Auth::user()->role === 'employee')) {
             return $next($request);
         }
+        if (Auth::check() && (Auth::user()->role === 'admin')) {
+            return redirect()->route('admin.dashboard');
+        }
+
         return redirect()->route('login');
     }
 }

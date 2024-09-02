@@ -22,10 +22,13 @@
         @if($viewType == 2)
         @can('company')
         <div class="total_resume">
+            <div class="compny_job_btn"><span>{{ $job->status == 1 ?'Active':'Deleted' }}</span></div>
+            @if($job->status == 1)
             <ul>
                 <li><a href="{{ route('job.edit',['id'=>Crypt::encrypt($job->id)]) }}">Edit</a></li>
-                <li><a href="#">Delete</a></li>
+                <li><a href="#" onclick="return confirm('Are you sure?')">Delete</a></li>
             </ul>
+            @endif
         </div>
         @endcan
         @endif
@@ -35,12 +38,11 @@
             @foreach (json_decode($job->job_type,true) as $type )
             <li>{{ $type }}</li>
             @endforeach
-
         </ul>
         @if($viewType == 2)
         <div class="company_job_btn">
             @can('company')
-            <a href="{{ route('myjob.details',['id'=>Crypt::encrypt($job->id)]) }}" class="button">View Job</a>
+            <a href="{{ route('myjob.details',['id'=>Crypt::encrypt($job->id)]) }}" class="button">View</a>
             @endcan
             @can('employee')
             <a href="{{ route('job.details',['id'=>Crypt::encrypt($job->id)]) }}" class="button">Job Details</a>

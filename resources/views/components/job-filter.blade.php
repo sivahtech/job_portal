@@ -51,9 +51,22 @@
      </div>
      <div class="filter">
          <h5>Salary</h5>
+         {{-- <input type="number" class="form-input" id="salary" name="salary" list="salary_suggestions" placeholder="Enter minimum salary" required>
+         <datalist id="salary_suggestions">
+             <option value="0">
+             <option value="5000">
+             <option value="10000">
+             <option value="15000">
+             <option value="20000">
+             <option value="25000">
+             <option value="50000">
+             <option value="55000">
+         </datalist>
+         <input type="number" class="form-input" id="max_salary" name="max_salary" list="salary_suggestions" placeholder="Enter maximum salary" required> --}}
+
+
          <input type="range" name="range" class="form-input" min="0" step="5000" max="100000" id="range" value="">
          <div class="value-display">
-             {{-- <span>Min Value: <span id="minValue">0</span></span><br> --}}
              <span>Salary:<span id="currentValue">10000</span></span>
          </div>
      </div>

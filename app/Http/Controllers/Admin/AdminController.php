@@ -37,7 +37,7 @@ class AdminController extends Controller
 
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => 'admin'], $request->remember)) {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard')->with('success','Welcom back admin');
             }
             return redirect()->back()->with('warning', 'Credentials not match');
         } catch (Exception $e) {

@@ -3,7 +3,7 @@
 @section('content')
 @inject('carbon','Carbon\Carbon' )
 <div class="row">
-    <div class="col-lg-12 grid-margin stretch-card"> 
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Jobs Details Table</h4>
@@ -30,14 +30,14 @@
                                 </td>
                                 <td> {{ $value->title }} </td>
                                 <td> {{ $value->location }} </td>
-                                <td> {{ $value->status == 1?'Published':'Pending'  }} </td>
+                                <td> {{ $value->status == 1?'Published (Active) ':'Deleted'  }} </td>
                                 <td> {{ $value->company->company_name }}</td>
                                 <td> {{ $carbon->parse($value->created_at)->format('d M , Y') }}</td>
                                 <td> {{ $carbon->parse($value->deadline)->format('d M , Y') }}</td>
                                 <td>
                                     <div class="row">
-                                        <a href=""><i class="fa fa-pencil"></i></a>
-                                        <a href=""><i class="fa fa-trash-o"></i></a>
+                                        <a href="{{ route('edit.job',['id'=>$value->id]) }}"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('delete.job',['id'=>$value->id]) }}" onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o"></i></a>
                                     </div>
                                 </td>
                             </tr>

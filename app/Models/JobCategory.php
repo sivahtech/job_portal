@@ -11,6 +11,6 @@ class JobCategory extends Model
 
     public function jobs()
     {
-        return $this->hasMany(Job::class,'job_category','id');
+        return $this->hasMany(Job::class,'job_category','id')->where('status',true);
     }
 }

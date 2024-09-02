@@ -35,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('company', function (User $user) {
             return $user->role == 'company';
         });
+        Gate::define('admin', function (User $user) {
+            return $user->role == 'admin';
+        });
         Paginator::defaultView('vendor.pagination.bootstrap-5');
     }
 }

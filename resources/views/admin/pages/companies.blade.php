@@ -5,6 +5,7 @@
 <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
+            <a href="{{ route('admin.create.company') }}" class="btn btn-primary">Create company</a>
             <div class="card-body">
                 <h4 class="card-title">Company Details Table</h4>
                 </p>
@@ -18,6 +19,7 @@
                                 <th> Status </th>
                                 <th> Job Added</th>
                                 <th> Company Type </th>
+                                <th> Profile Completed</th>
                                 <th> Created Date</th>
                                 <th> Actions</th>
                             </tr>
@@ -31,13 +33,14 @@
                                 <td> {{ $value->company_name }} </td>
                                 <td> {{ $value->email }} </td>
                                 <td> {{ Str::ucfirst($value->status) }} </td>
-                                <td>  {{ $value->job_count }}</td>
+                                <td> {{ $value->job_count }}</td>
                                 <td> {{ $value->company_type }}</td>
+                                <td> {{ $value->is_porfile_completed ? 'Yes':'No' }}</td>
                                 <td> {{ $carbon->parse($value->created_at)->format('d M , Y') }}</td>
                                 <td>
                                     <div class="row">
-                                        <a href=""><i class="fa fa-pencil"></i></a>
-                                        <a href=""><i class="fa fa-trash-o"></i></a>
+                                        <a href="{{ route('edit.company',['id'=>$value->id]) }}"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{ route('delete.company',['id'=>$value->id]) }}" onclick=" return confirm('Are you sure?')"><i class="fa fa-trash-o"></i></a>
                                     </div>
                                 </td>
                             </tr>

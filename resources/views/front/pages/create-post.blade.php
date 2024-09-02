@@ -151,12 +151,12 @@
                             <div class="inline extra-field conditional-field {{ isset($job) ? ($job->salary_type === 'range'?'show':'') :''  }}" id="salary_range">
                                 <div class="form-group">
                                     <div class="adv-input">
-                                        <i class="fa fa-dollar"></i><input type="number" name="min_salary" class="form-input" placeholder="Max Salary" value="{{ $job->max_salary ?? '' }}">
+                                        <i class="fa fa-dollar"></i><input type="number" name="min_salary" class="form-input" placeholder="Min Salary" value="{{ $job->salary ?? '' }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="adv-input">
-                                        <i class="fa fa-dollar"></i><input type="number" name="max_salary" class="form-input" placeholder="Min Salary" value="{{ $job->salary ?? '' }}">
+                                        <i class="fa fa-dollar"></i><input type="number" name="max_salary" class="form-input" placeholder="Max Salary" value="{{ $job->max_salary ?? '' }}">
                                     </div>
                                 </div>
                             </div>

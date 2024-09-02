@@ -1,5 +1,5 @@
 @extends('front.layouts.app')
- 
+  
 @section('content')
 @inject('carbon','Carbon\Carbon' )
 <section class="dash-banner">
