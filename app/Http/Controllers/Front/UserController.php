@@ -126,6 +126,10 @@ class UserController extends Controller
             if ($request->file('resume')) {
                 $resume = $this->uploadMedia($request->file('resume'), 'resumes');
                 $empResume = EmpResume::where('user_id', Auth::id())->first();
+                if (empty($empResume)) {
+                    $empResume = new EmpResume();
+                    $empResume->user_id = Auth::id();
+                }
                 $empResume->file = $resume;
                 $empResume->save();
             }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\userSocialDetails;
+use App\Models\UserSocialDetails;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use GuzzleHttp\Client;
@@ -28,9 +28,9 @@ class socialLoginController extends Controller
         DB::beginTransaction();
         try {
             if ($user) {
-                $socialDetails = userSocialDetails::where(['user_id' => $user->id, 'provider' => $provider, 'provider_id' => $userSocial->getId()])->first();
+                $socialDetails = UserSocialDetails::where(['user_id' => $user->id, 'provider' => $provider, 'provider_id' => $userSocial->getId()])->first();
                 if (empty($socialDetails)) {
-                    $userSocialDetails  = new userSocialDetails();
+                    $userSocialDetails  = new UserSocialDetails();
                     $userSocialDetails->user_id = $user->id;
                     $userSocialDetails->provider_id = $userSocial->getId();
                     $userSocialDetails->provider = $provider;
@@ -51,7 +51,7 @@ class socialLoginController extends Controller
                 $user->token                = Str::random(15);
                 $user->save();
                 if ($user) {
-                    $userSocialDetails  = new userSocialDetails();
+                    $userSocialDetails  = new UserSocialDetails();
                     $userSocialDetails->user_id = $user->id;
                     $userSocialDetails->provider_id = $userSocial->getId();
                     $userSocialDetails->provider = $provider;
@@ -125,7 +125,7 @@ class socialLoginController extends Controller
 
         $user                = new User();
         $user->name          = $name;
-        $user->nickname      = generateNickname($name);
+        // $user->nickname      = generateNickname($name);
         $user->password      = Hash::make(123456);
         $user->image         = config('user.user.image');
         $user->back_image    = config('user.user.back_image');
