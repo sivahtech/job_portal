@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->tinyText('status')->default('active')->comment('active', 'inactive');
-            $table->tinyText('role')->nullable()->comment('admin', 'employee', 'company');
+            $table->string('status')->default('active')->comment('active', 'inactive');
+            $table->string('role')->nullable()->comment('admin', 'employee', 'company');
             $table->tinyInteger('loginType')->default(1)->comment('1->web 2->social login');
             $table->string('company_name')->nullable();
             $table->string('company_type')->nullable();
