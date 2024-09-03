@@ -15,7 +15,7 @@ class empFilter extends Component
     public $data;
     public function __construct()
     {
-        $this->data['industries'] = JobIndustry::all();
+        $this->data['industries'] = JobIndustry::where('status', 1)->get();
     }
 
     /**
@@ -25,6 +25,6 @@ class empFilter extends Component
      */
     public function render()
     {
-        return view('components.emp-filter',['data'=>$this->data]);
+        return view('components.emp-filter', ['data' => $this->data]);
     }
 }

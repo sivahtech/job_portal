@@ -132,10 +132,12 @@ class UserController extends Controller
 
             if ($request->skills) {
                 foreach ($request->skills as $skill) {
-                    $empSkill = new EmpSkill();
-                    $empSkill->user_id = Auth::id();
-                    $empSkill->name = $skill;
-                    $empSkill->save();
+                    if (!EmpSkill::where('name', $skill)->exists()) {
+                        $empSkill = new EmpSkill();
+                        $empSkill->user_id = Auth::id();
+                        $empSkill->name = $skill;
+                        $empSkill->save();
+                    }
                 }
             }
             return redirect()->back()->with(['success' => 'Profile Update']);
@@ -148,10 +150,10 @@ class UserController extends Controller
     #--- Resume  Page ---#
     public function resume($userId, $jobId = '')
     {
-      
-         $userId = Crypt::decrypt($userId);
+
+        $userId = Crypt::decrypt($userId);
         if ($jobId) {
-             $jobId = Crypt::decrypt($jobId);
+            $jobId = Crypt::decrypt($jobId);
             $resume = AppliedJob::select('*', 'resume as file')->where(['user_id' => $userId, 'job_id' => $jobId])->whereNotNull('resume')->first();
             if (empty($resume)) {
                 $resume =  EmpResume::where('user_id', $userId)->first();
@@ -159,7 +161,7 @@ class UserController extends Controller
         } else {
             $resume =  EmpResume::where('user_id', $userId)->first();
         }
-        
+
         return view('front.pages.resume', ['resume' => $resume]);
     }
 

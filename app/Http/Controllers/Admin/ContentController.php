@@ -290,7 +290,6 @@ class ContentController extends Controller
     #-- create or update employee --#
     public function createEmployee(Request $request)
     {
-
         $request->validate([
             'first_name' => ['required'],
             'last_name' => ['required'],

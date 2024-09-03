@@ -123,7 +123,7 @@
                         <input type="submit" class="button" value="Sign Up">
                     </div>
                     <p class="inline-text">Already have an account? <a href="{{ route('login') }}">Login</a> Here</p>
-                    <p class="inline-text"><a href="#" class="google-btns"><img src="{{ asset('assets/images/google.png') }}" alt="Google Logo"> Continue with Google</a></p>
+                    <p class="inline-text"><a href="{{ url('login/google') }}" class="google-btns"><img src="{{ asset('assets/images/google.png') }}" alt="Google Logo"> Continue with Google</a></p>
                 </form>
             </div>
         </div>

@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
-            <a href="{{ route('admin.create.employee') }}" class="btn btn-primary">Create company</a>
+            <a href="{{ route('admin.create.employee') }}" class="btn btn-primary">Add New employee</a>
 
             <div class="card-body">
                 <h4 class="card-title">Employees Details Table</h4>

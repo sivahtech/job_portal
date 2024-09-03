@@ -1,111 +1,73 @@
 @extends('front.layouts.app')
 
 @section('content')
-@inject('carbon','Carbon\Carbon' )
-<section class="dash-banner">
-    <div class="container">
-        <h2>Applied <span class="alt-text">Jobs</span></h2>
-    </div>
-</section>
-
-<section class="featured-jobs company_job">
-    <div class="container">
-        <form action="" class="search-form">
-            <div class="inline">
-                <div class="form-group">
-                    <div class="adv-input">
-                        <i class="fa fa-list"></i>
-                        <select name="category" id="category" class="form-input">
-                            <option value="" selected disabled>Job Category</option>
-                            @foreach ($data['job_categories'] as $category )
-                            <option value="{{ $category->id }}" {{ request()->category == $category->id ?'selected':'' }}>{{ $category->name }}</option>
-
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="adv-input">
-                        <i class="fa fa-list"></i>
-                        <select name="type" id="type" class="form-input">
-                            <option value="" selected disabled>Job Type</option>
-                            @foreach ($data['job_types'] as $type )
-                            <option value="{{ $type->name }}" {{ request()->type == $type->name ?'selected':'' }}>{{ $type->name }}</option>
-
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="adv-input">
-                        <i class="fa fa-list"></i>
-                        <select name="industry" id="industry" class="form-input">
-                            <option value="" selected disabled>Job Industry</option>
-                            @foreach ($data['job_industries'] as $type )
-                            <option value="{{ $type->id }}" {{ request()->industry == $type->id ?'selected':'' }}>{{ $type->name }}</option>
-
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group form-submit">
-                    <input type="submit" class="button" value="Search">
-                </div>
-            </div>
-        </form>
-
-        <div class="job-cards" id="job_crd">
-            @forelse ($data['jobs'] as $key =>$value)
-            @php 
-            $job = $value->job;
-            @endphp
-            @if($job)
-            <div class="card">
-                <div class="above">
-                    <img src="{{ asset('assets/images/favicon.png') }}" alt="" class="logo">
-                    <div class="post-details">
-                        <h5><a href="{{ route('job.details',['id'=>Crypt::encrypt($job->id)]) }}">{{ $job->title }}</a></h5>
-                        <ul>
-                            <li><i class="fa fa-map-marker"></i>{{ $job->location }}</li>
-                            <li><i class="fa fa-briefcase"></i>Exp: {{ $job->experience }}</li>
-                            <li><i class="fa fa-dollar"></i>Salary: @if($job->salary_type == 'fixed')
-                                ${{$job->salary }}
-                                @endif
-                                @if($job->salary_type == 'range')
-                                ${{$job->salary }} - ${{ $job->max_salary }}
-                                @endif
-                                / Per Month</li>
-                            <li><i class="fa fa-clock-o"></i>Posted On: {{ $carbon->parse($job->created_at)->format('d M , Y') }}</li>
-                            <li><i class="fa fa-clock-o"></i>Deadline: {{ $carbon->parse($job->deadline)->format('d M , Y') }}</li>
-                        </ul>
-                    </div>
-                    @can('employee')
-                    <div class="total_resume">
-                        <div class="compny_job_btn"><span>{{ $job->status == 1 ?'Active':'Deleted or Expired' }}</span></div>
-                    </div>
-                    @endcan
-                </div>
-                <div class="bottom">
-                    <ul class="timeline">
-                        @foreach (json_decode($job->job_type,true) as $type )
-                        <li>{{ $type }}</li>
-                        @endforeach
-
-                    </ul>
-                    <div class="company_job_btn">
-                        @can('employee')
-                        <a href="{{ route('job.details',['id'=>Crypt::encrypt($job->id)]) }}" class="button">Job Details</a>
-                        @endcan
-                    </div>
-                </div>
-            </div>
-            @endif
-            @empty
-            @endforelse
+    @inject('carbon', 'Carbon\Carbon')
+    <section class="dash-banner">
+        <div class="container">
+            <h2>Applied <span class="alt-text">Jobs</span></h2>
         </div>
-        {{ $data['jobs']->links() }}
-        {{-- <a id="loadMoreBtn" class="button">Load More</a> --}}
-    </div>
+    </section>
 
-</section>
+    <section class="featured-jobs company_job">
+        <div class="container">
+            <form action="" class="search-form">
+                <div class="inline">
+                    <div class="form-group">
+                        <div class="adv-input">
+                            <i class="fa fa-list"></i>
+                            <select name="category" id="category" class="form-input">
+                                <option value="" selected disabled>Job Category</option>
+                                @foreach ($data['job_categories'] as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ request()->category == $category->id ? 'selected' : '' }}>{{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="adv-input">
+                            <i class="fa fa-list"></i>
+                            <select name="type" id="type" class="form-input">
+                                <option value="" selected disabled>Job Type</option>
+                                @foreach ($data['job_types'] as $type)
+                                    <option value="{{ $type->name }}"
+                                        {{ request()->type == $type->name ? 'selected' : '' }}>
+                                        {{ $type->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="adv-input">
+                            <i class="fa fa-list"></i>
+                            <select name="industry" id="industry" class="form-input">
+                                <option value="" selected disabled>Job Industry</option>
+                                @foreach ($data['job_industries'] as $type)
+                                    <option value="{{ $type->id }}"
+                                        {{ request()->industry == $type->id ? 'selected' : '' }}>{{ $type->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group form-submit">
+                        <input type="submit" class="button" value="Search">
+                    </div>
+                </div>
+            </form>
+
+            <div class="job-cards" id="job_crd">
+                <x-job-feed  :data="$data['jobs']"  :type="2"/>
+            </div>
+            <div id="paginationLinks">
+                {{ $data['jobs']->links() }}
+            </div>
+            {{-- <a id="loadMoreBtn" class="button">Load More</a> --}}
+        </div>
+
+    </section>
 @endsection
+
+                 
+                   

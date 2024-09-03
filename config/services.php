@@ -33,19 +33,19 @@ return [
     'instagram' => [
         'client_id'     => env('INSTA_CLIENT_ID'),
         'client_secret' => env('INSTA_CLIENT_SECRET'),
-        'redirect'      => 'http://localhost/jobPortal/instagram/callback',
+        'redirect'      => 'http://localhost/jobPortal/login/instagram/callback',
     ],
 
     'facebook' => [
         'client_id'     => env('FACEBOOK_CLIENT_ID'),
         'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
-        'redirect'      => 'http://localhost/jobPortal/facebook/callback',
+        'redirect'      => 'http://localhost/jobPortal/login/facebook/callback',
     ],
 
     'google' => [
         'client_id'     => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect'      => 'http://localhost/jobPortal/google/callback',
+        'redirect'      => 'http://localhost/jobPortal/login/google/callback',
     ],
 
 ];

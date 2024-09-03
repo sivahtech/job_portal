@@ -45,13 +45,13 @@
             <label>
                 <input type="checkbox" name="remember" value="1" class="form-input ">Remember Me
             </label>
-            <a href="#">Forget Password?</a>
+            <a href="{{ route('password.request') }}">Forget Password?</a>
         </div>
         <div class="form-group form-submit">
             <input type="submit" class="button" value="Login">
         </div>
         <p class="inline-text">Don’t have an account? <a href="{{ route('register') }}">Sign Up</a> Here</p>
-        <p class="inline-text"><a href="#" class="google-btns"><img src="{{ asset('assets/images/google.png') }}">Continue with Google</a></p>
+        <p class="inline-text"><a href="{{ url('login/google') }}" class="google-btns"><img src="{{ asset('assets/images/google.png') }}">Continue with Google</a></p>
     </form>
     </div>
     </div>

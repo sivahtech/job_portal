@@ -15,7 +15,7 @@ class JobCategory extends Component
      */
     public function __construct()
     {
-        $this->categories = ModelsJobCategory::withCount('jobs')->get();
+        $this->categories = ModelsJobCategory::where('status', 1)->withCount('jobs')->get();
     }
 
     /**

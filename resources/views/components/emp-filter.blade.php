@@ -1,14 +1,17 @@
 <aside>
-    <h5>All Filters</h5> 
+    <h5>All Filters</h5>
     <div class="filter">
         <h5>Industry</h5>
-        <ul>
-            @php
-            $checkedIndustries = explode(',',request()->industry);
-            @endphp
+        @php
+            $checkedIndustries = explode(',', request()->industry);
+        @endphp
+        <ul style="display:{{ !empty($checkedIndustries) ? 'block' : 'none' }};">
 
             @forelse ($data['industries'] as $key => $value)
-            <li class="checkbox"><label><input type="checkbox" name="industry[]" {{ in_array( $value->id , $checkedIndustries)?'checked':'' }} class="industry" value="{{ $value->id }}" class="form-input" id="{{ $key }}">{{ $value->name }}</label></li>
+                <li class="checkbox"><label><input type="checkbox" name="industry[]"
+                            {{ in_array($value->id, $checkedIndustries) ? 'checked' : '' }} class="industry"
+                            value="{{ $value->id }}" class="form-input"
+                            id="{{ $key }}">{{ $value->name }}</label></li>
             @empty
             @endforelse
 

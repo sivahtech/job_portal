@@ -6,8 +6,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\JobController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\socialLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,22 +28,35 @@ Route::middleware(['guest'])->group(function () {
 
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.post');
+
+    Route::get('/forgot-password', function () {
+        return view('front.auth.forgot_pasword');
+    })->name('password.request');
+
+    Route::get('/reset-password/{token}', function (string $token) {
+        return view('front.auth.reset-password', ['token' => $token]);
+    })->name('password.reset');
 });
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])->name('password.email');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
 Route::get('find-jobs', [JobController::class, 'findJobs'])->name('find.jobs');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-
 Route::get('get-country', [AuthController::class, 'getCountries'])->name('country');
 Route::get('get-states/', [AuthController::class, 'getStates'])->name('state');
 Route::get('get-cities/', [AuthController::class, 'getCities'])->name('city');
 Route::get('job-details/{id}', [JobController::class, 'jobDetails'])->name('job.details');
+Route::get('/login/{social}', [socialLoginController::class, 'index'])->where('social', 'facebook|google|instagram');
+Route::get('/login/{social}/callback', [socialLoginController::class, 'store'])->where('social', 'facebook|google|instagram');
 
+
+Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 Route::middleware(['auth', 'user.check'])->group(function () {
-    Route::get('/profile', [UserController::class, 'profile'])->name('profile');
     Route::get('/settings', [UserController::class, 'settings'])->name('settings');
     Route::get('/download-resume', [UserController::class, 'getDownload'])->name('download.resume');
-
     Route::post('/profile', [UserController::class, 'completeProfile'])->name('profile.post');
     Route::post('update-profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    Route::get('resume/{userId}/{jobId?}', [UserController::class, 'resume'])->name('resume');
 
     Route::get('find-candidate', [JobController::class, 'findCandidates'])->name('find.candidates');
     Route::post('apply-job', [JobController::class, 'applyJob'])->name('apply.job');
@@ -53,10 +66,6 @@ Route::middleware(['auth', 'user.check'])->group(function () {
     Route::get('edit-job/{id}', [JobController::class, 'editJobs'])->name('job.edit');
     Route::put('update-job/{jobId}', [JobController::class, 'updateJobs'])->name('job.update');
     Route::get('myjob-details/{id}', [JobController::class, 'myJobDetails'])->name('myjob.details');
-
-    Route::get('resume/{userId}/{jobId?}', [UserController::class, 'resume'])->name('resume');
-
-
     Route::post('store-job', [JobController::class, 'store'])->name('job.store');
 });
 

@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Traits\CommonTrait;
 use App\Traits\ImageTrait;
 use Exception;
+use Illuminate\Auth\Access\Gate as AccessGate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -31,14 +32,17 @@ class JobController extends Controller
     #-- find candidates blade file ---#
     public function findCandidates(Request $request)
     {
-        if ($request->ajax()) {
-            $data = $this->getEmp($request);
-            $html = view('components.emp-feed', ['data' => $data])->render();
+        if (Gate::allows('company')) {
+            if ($request->ajax()) {
+                $data = $this->getEmp($request);
+                $html = view('components.emp-feed', ['data' => $data])->render();
 
-            return response()->json(['status' => 200, 'message' => 'emps', 'data' => $html, 'pagination' => (string) $data->links()]);
+                return response()->json(['status' => 200, 'message' => 'emps', 'data' => $html, 'pagination' => (string) $data->links()]);
+            }
+            $data = $this->getEmp($request);
+            return view('front.pages.find_candidates', ['data' => $data]);
         }
-        $data = $this->getEmp($request);
-        return view('front.pages.find_candidates', ['data' => $data]);
+        return redirect()->route('index');
     }
 
     /**
@@ -68,7 +72,7 @@ class JobController extends Controller
         if ($limit) {
             return $emp->with(['skills'])->limit($limit)->inRandomOrder()->get();
         }
-        return $emp->with(['skills'])->paginate(6)->appends($request->query());
+        return $emp->with(['skills'])->paginate(12)->appends($request->query());
     }
 
     public function getJobs($request, $limit = '')
@@ -140,7 +144,7 @@ class JobController extends Controller
         if ($limit) {
             return    $jobs->limit($limit)->inRandomOrder()->get();
         }
-        return $jobs->paginate(6)->appends($request->query());
+        return $jobs->latest()->paginate(12)->appends($request->query());
         dd(DB::getQueryLog());
     }
 
@@ -160,6 +164,10 @@ class JobController extends Controller
     }
     public function findJobs(Request $request)
     {
+        if (auth()->check() && auth()->user()->role !== 'employee') {
+            return redirect()->route('index');
+        }
+
         $jobs = $this->getJobs($request);
         if ($request->ajax()) {
             $html = view('components.job-feed', ['jobs' => $jobs, 'viewType' => 1])->render();
@@ -173,19 +181,26 @@ class JobController extends Controller
 
     public function index()
     {
-        $data = $this->getJobData();
-        $data['qualifications'] = Qualification::where('status', true)->get();
-        $company = User::with(['country', 'state', 'city'])->find(Auth::id());
-        return view('front.pages.create-post', compact('data', 'company'));
+        if (Gate::allows('company')) {
+
+            $data = $this->getJobData();
+            $data['qualifications'] = Qualification::where('status', true)->get();
+            $company = User::with(['country', 'state', 'city'])->find(Auth::id());
+            return view('front.pages.create-post', compact('data', 'company'));
+        }
+        return redirect()->route('index');
     }
 
     public function editJobs($id)
     {
-        $data = $this->getJobData();
-        $data['qualifications'] = Qualification::where('status', true)->get();
-        $job = Job::find(Crypt::decrypt($id));
+        if (Gate::allows('company')) {
+            $data = $this->getJobData();
+            $data['qualifications'] = Qualification::where('status', true)->get();
+            $job = Job::find(Crypt::decrypt($id));
 
-        return view('front.pages.create-post', compact('data', 'job'));
+            return view('front.pages.create-post', compact('data', 'job'));
+        }
+        return redirect()->route('index');
     }
 
 
@@ -382,6 +397,7 @@ class JobController extends Controller
                 })->withCount('applied')->paginate(10);
             return view('front.pages.my-jobs', ['data' => $data]);
         }
+        return redirect()->route('index');
     }
 
     #---- My applied jobs Employee ---#
@@ -389,23 +405,21 @@ class JobController extends Controller
     {
         if (Gate::allows('employee')) {
             $data = $this->getJobData();
-            $data['jobs'] = AppliedJob::where('user_id', Auth::id())->with(['job' => function ($query) use ($request) {
-                $query->when($request->category, function ($query) use ($request) {
+            $data['jobs']  = AppliedJob::select('jobs.*')->where('applied_jobs.user_id', Auth::id())->join('jobs', 'applied_jobs.job_id', '=', 'jobs.id')
+                ->when($request->category, function ($query) use ($request) {
                     $query->where('job_category', $request->category);
-                });
-                $query->when($request->industry, function ($query) use ($request) {
+                })
+                ->when($request->industry, function ($query) use ($request) {
                     $query->where('job_industry', $request->industry);
-                });
-                $query->when($request->type, function ($query) use ($request) {
+                })
+                ->when($request->type, function ($query) use ($request) {
                     $type = explode(',', $request->type);
                     $query->where(function ($q) use ($type) {
                         $q->orWhereJsonContains('job_type', $type);
                     });
-                });
-
-                return $query;
-            }])->paginate(10);
+                })->paginate(10)->appends($request->query());
             return view('front.pages.applied-jobs', ['data' => $data]);
         }
+        return redirect()->route('index');
     }
 }

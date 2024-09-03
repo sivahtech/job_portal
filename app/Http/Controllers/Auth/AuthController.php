@@ -10,11 +10,15 @@ use App\Models\State;
 use App\Models\User;
 use Exception;
 use Illuminate\Auth\Access\Gate;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate as FacadesGate;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -24,7 +28,7 @@ class AuthController extends Controller
         $jobs = new JobController();
         $data = $jobs->getJobs($request, 4);
         if (FacadesGate::allows('company')) {
-            $data = $jobs->getEmp($request, 4);
+            $data = $jobs->getEmp($request, 6);
             return view('front.pages.index', ['data' => $data]);
         }
         return view('front.pages.index', ['jobs' => $data]);
@@ -36,11 +40,6 @@ class AuthController extends Controller
         return view('front.auth.login');
     }
 
-    #--- load forgot password blade file ---#
-    public function forgotPassword(Request $request)
-    {
-        return view('front.auth.forgot_pasword');
-    }
 
     #--- login ---#
     public function checkAuth(Request $request)
@@ -53,10 +52,6 @@ class AuthController extends Controller
 
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => ['company', 'employee']], $request->remember)) {
-                // dd(Auth::user());
-                // if (Auth::user()->role === 'company') {
-                //     dd(Auth::user());
-                // }
                 if (Auth::user()->is_porfile_completed) {
                     return redirect()->route('index');
                 } else {
@@ -118,5 +113,47 @@ class AuthController extends Controller
             ->limit(25)->get();
 
         return response()->json($cities);
+    }
+
+
+    #-- forgotPassword ---#
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status), 'success' => 'We have e-mailed your password reset link!'])
+            : back()->withErrors(['email' => __($status)]);
+    }
+
+    #--- resetPassword ----#
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with(['status' => __($status), 'success' => 'Password updated successfully'])
+            : back()->withErrors(['email' => [__($status)]]);
     }
 }
