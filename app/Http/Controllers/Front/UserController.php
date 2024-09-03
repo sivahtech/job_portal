@@ -136,7 +136,7 @@ class UserController extends Controller
 
             if ($request->skills) {
                 foreach ($request->skills as $skill) {
-                    if (!EmpSkill::where('name', $skill)->exists()) {
+                    if (!EmpSkill::where('name', $skill)->where('user_id',Auth::id())->exists()) {
                         $empSkill = new EmpSkill();
                         $empSkill->user_id = Auth::id();
                         $empSkill->name = $skill;
