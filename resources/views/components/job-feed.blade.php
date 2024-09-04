@@ -1,4 +1,4 @@
-@inject('carbon', 'Carbon\Carbon')
+@inject('carbon', 'Carbon\Carbon') 
 @forelse ($jobs as $job )
     <div class="card">
         <div class="above">

@@ -28,6 +28,7 @@ Route::middleware(['guest'])->group(function () {
 
     Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.post');
+    Route::get('contact', [RegisterController::class, 'index'])->name('contact');
 
     Route::get('/forgot-password', function () {
         return view('front.auth.forgot_pasword');

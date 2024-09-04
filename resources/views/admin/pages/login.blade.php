@@ -8,7 +8,6 @@
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                             <div class="brand-logo">
                                 <a href="{{ route('index') }}">
-
                                     <img src="{{ asset('assets/images/logo.png') }}" alt="logo">
                                 </a>
                             </div>

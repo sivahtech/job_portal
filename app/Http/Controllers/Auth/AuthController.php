@@ -9,29 +9,33 @@ use App\Models\Country;
 use App\Models\State;
 use App\Models\User;
 use Exception;
-use Illuminate\Auth\Access\Gate;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate as FacadesGate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
 
 class AuthController extends Controller
 {
     #--- load index blade file ---#
     public function index(Request $request)
     {
-        $jobs = new JobController();
-        $data = $jobs->getJobs($request, 4);
-        if (FacadesGate::allows('company')) {
-            $data = $jobs->getEmp($request, 6);
-            return view('front.pages.index', ['data' => $data]);
+        if (!Auth::check() || (auth()->check() && (auth()->user()->role == 'employee' || auth()->user()->role == 'company'))) {
+            $jobs = new JobController();
+            $data = $jobs->getJobs($request, 4);
+            if (Gate::allows('company')) {
+                $data = $jobs->getEmp($request, 6);
+                return view('front.pages.index', ['data' => $data]);
+            }
+            return view('front.pages.index', ['jobs' => $data]);
         }
-        return view('front.pages.index', ['jobs' => $data]);
+        if (Gate::allows('admin')) {
+            return redirect()->route('admin.dashboard');
+        }
     }
 
     #---- load login blade file ----#

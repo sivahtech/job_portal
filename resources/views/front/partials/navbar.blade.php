@@ -1,30 +1,40 @@
  <header>
      <div class="container flex">
          <div class="col">
-             @if (Auth::check() && (auth()->user()->role == 'employee' || auth()->user()->role == 'company'))
+             @if (!Auth::check() || (auth()->check() && (auth()->user()->role == 'employee' || auth()->user()->role == 'company')))
                  <a href="{{ route('index') }}"><img src="{{ asset('assets/images/logo.png') }}" class="logo"></a>
              @endif
-             @can('admin')
+             {{-- @can('admin')
                  <a href="{{ route('admin.dashboard') }}"><img src="{{ asset('assets/images/logo.png') }}" class="logo"></a>
-             @endcan
+             @endcan --}}
          </div>
          <div class="col">
              <ul class="menu">
-                 <li class="{{ Route::currentRouteName()== 'index'?'active':'' }}"><a href="{{ route('index') }}">Home</a></li>
+                 @if (!Auth::check() || (auth()->check() && (auth()->user()->role == 'employee' || auth()->user()->role == 'company')))
+                     <li class="{{ Route::currentRouteName() == 'index' ? 'active' : '' }}">
+                         <a href="{{ route('index') }}">Home</a>
+                     </li>
+                 @endif
+                
                  @guest
-                     <li class="{{ Route::currentRouteName()== 'find.jobs'?'active':'' }}"><a href="{{ route('find.jobs') }}">Find a job</a></li>
+                     <li class="{{ Route::currentRouteName() == 'find.jobs' ? 'active' : '' }}"><a
+                             href="{{ route('find.jobs') }}">Find a job</a></li>
                  @endguest
 
                  @can('employee')
-                     <li class="{{ Route::currentRouteName()== 'find.jobs'?'active':'' }}"><a href="{{ route('find.jobs') }}">Find a job</a></li>
+                     <li class="{{ Route::currentRouteName() == 'find.jobs' ? 'active' : '' }}"><a
+                             href="{{ route('find.jobs') }}">Find a job</a></li>
                  @endcan
 
                  @can('company')
-                     <li class="{{ Route::currentRouteName()== 'find.candidates'?'active':'' }}"><a href="{{ route('find.candidates') }}">Find Candidate</a></li>
-                     <li class="{{ Route::currentRouteName()== 'post.job'?'active':'' }}"><a href="{{ route('post.job') }}">Post a job</a></li>
+                     <li class="{{ Route::currentRouteName() == 'find.candidates' ? 'active' : '' }}"><a
+                             href="{{ route('find.candidates') }}">Find Candidate</a></li>
+                     <li class="{{ Route::currentRouteName() == 'post.job' ? 'active' : '' }}"><a
+                             href="{{ route('post.job') }}">Post a job</a></li>
                  @endcan
-
-                 <li><a href="#">contact</a></li>
+                 @if (!Auth::check() || (auth()->check() && (auth()->user()->role == 'employee' || auth()->user()->role == 'company')))
+                     <li><a href="{{ route('contact') }}">contact</a></li>
+                 @endif
              </ul>
          </div>
 
