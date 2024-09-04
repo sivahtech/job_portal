@@ -31,7 +31,7 @@ class JobController extends Controller
 
     #-- find candidates blade file ---#
     public function findCandidates(Request $request)
-    {
+    { 
         if (Gate::allows('company')) {
             if ($request->ajax()) {
                 $data = $this->getEmp($request);

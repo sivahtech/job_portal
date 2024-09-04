@@ -7,7 +7,7 @@
         @endphp
         <ul style="display:{{ !empty($checkedIndustries) ? 'block' : 'none' }};">
 
-            @forelse ($data['industries'] as $key => $value)
+            @forelse ($industries as $key => $value)
                 <li class="checkbox"><label><input type="checkbox" name="industry[]"
                             {{ in_array($value->id, $checkedIndustries) ? 'checked' : '' }} class="industry"
                             value="{{ $value->id }}" class="form-input"

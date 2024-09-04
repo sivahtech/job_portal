@@ -9,7 +9,7 @@ use App\Models\JobRole;
 use App\Models\JobType;
 
 class JobFilter extends Component
-{
+{ 
     /**
      * Create a new component instance.
      *

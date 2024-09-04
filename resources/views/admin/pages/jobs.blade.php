@@ -84,12 +84,12 @@
                                         <td> {{ $carbon->parse($value->created_at)->format('d M , Y') }}</td>
                                         <td> {{ $carbon->parse($value->deadline)->format('d M , Y') }}</td>
                                         <td>
-                                            <div class="row">
+                                            <div class="d-flex justify-content-between">
                                                 <a href="{{ route('edit.job', ['id' => $value->id]) }}"><i
                                                         class="fa fa-pencil"></i></a>
                                                 <a href="{{ route('delete.job', ['id' => $value->id]) }}"
                                                     onclick="return confirm('Are you sure?')"><i
-                                                        class="fa fa-trash-o"></i></a>
+                                                        class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -101,7 +101,9 @@
 
                             </tbody>
                         </table>
-                        {{ $data['jobs']->links() }}
+                        <div class="mt-3">
+                            {{ $data['jobs']->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

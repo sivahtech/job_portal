@@ -3,7 +3,7 @@
 @section('content')
     <section class="jobs">
         <div class="container flex">
-            <x-emp-filter />
+            <x-emp-filter /> 
             <div class="right-content">
                 <form action="{{ route('find.candidates') }}" method="GET" class="search-form">
                     <div class="inline">

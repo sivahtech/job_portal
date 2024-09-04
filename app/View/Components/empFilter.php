@@ -5,7 +5,7 @@ namespace App\View\Components;
 use App\Models\JobIndustry;
 use Illuminate\View\Component;
 
-class empFilter extends Component
+class EmpFilter extends Component
 {
     /**
      * Create a new component instance.
@@ -25,6 +25,7 @@ class empFilter extends Component
      */
     public function render()
     {
-        return view('components.emp-filter', ['data' => $this->data]);
+
+        return view('components.emp-filter',  $this->data);
     }
 }
