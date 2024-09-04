@@ -39,7 +39,6 @@
                          // Check if the feature_image key exists and is not empty
                          $imagePath = isset(Auth::user()->image) ? env('IMAGE_PATH') . Auth::user()->image : null;
                      @endphp
-
                      <li>
                          <a href="#">
                              @if ($imagePath && File::exists(storage_path('app/' . Auth::user()->image)))

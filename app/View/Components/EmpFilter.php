@@ -1,21 +1,21 @@
 <?php
 
 namespace App\View\Components;
- 
+
+use App\Models\JobIndustry;
 use Illuminate\View\Component;
 
-class EmpFeed extends Component
+class EmpFilter extends Component
 {
-    public $data;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public $data;
+    public function __construct()
     {
-        $this->data  = $data;
-        
+        $this->data['industries'] = JobIndustry::where('status', 1)->get();
     }
 
     /**
@@ -25,6 +25,8 @@ class EmpFeed extends Component
      */
     public function render()
     {
-        return view('components.emp-feed', ['data' => $this->data]);
+
+        
+        return view('components.emp-filter',  $this->data);
     }
 }

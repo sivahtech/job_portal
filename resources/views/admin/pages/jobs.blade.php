@@ -120,9 +120,7 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <p>No data found</p>
-                                    </tr>
+                                <p>No data found</p>
                                 @endforelse
 
                             </tbody>
