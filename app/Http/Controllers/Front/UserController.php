@@ -106,6 +106,10 @@ class UserController extends Controller
             $user->country_id = $request->country;
             $user->state_id = $request->state;
             $user->city_id = $request->city;
+
+            $user->last_name = $request->last_name;
+            $user->first_name = $request->first_name;
+            $user->user_name = $request->user_name;
             if (Auth::user()->role == 'employee') {
                 $user->profile = $request->profile;
                 $user->industry_id = $request->industry;

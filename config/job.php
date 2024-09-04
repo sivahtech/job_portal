@@ -34,6 +34,13 @@ return [
     ],
     'skills' => [
             'Software Development' => [
+                'Html',
+                'CSS',
+                'Boot Strap',
+                'Jquery',
+                'Word Press',
+                'Codeigniter',
+                'Express',
                 'PHP',
                 'JavaScript',
                 'Python',
