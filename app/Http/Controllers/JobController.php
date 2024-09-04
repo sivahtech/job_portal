@@ -180,7 +180,7 @@ class JobController extends Controller
     }
 
     public function index()
-    {
+    { 
         if (Gate::allows('company')) {
 
             $data = $this->getJobData();

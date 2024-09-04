@@ -30,14 +30,6 @@
     <script src="{{ asset('assets/admin/js/template.js') }}"></script>
     <script src="{{ asset('assets/admin/js/settings.js') }}"></script>
     <script src="{{ asset('assets/admin/js/hoverable-collapse.js') }}"></script>
-
-
-    {{-- <script src="{{ asset('assets/admin/vendors/js/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('assets/admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/off-canvas.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/template.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/settings.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/hoverable-collapse.js') }}"></script> --}}
     <script src="{{ asset('assets/admin/js/todolist.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 

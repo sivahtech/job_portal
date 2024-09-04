@@ -5,11 +5,11 @@
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
-                <a href="{{ route('admin.create.employee') }}" class="btn btn-primary">Add New employee</a>
-
                 <div class="card-body">
-                    <h4 class="card-title">Employees Details Table</h4>
-                    </p>
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Employees Details Table</h4>
+                        <a href="{{ route('admin.create.employee') }}" class="btn btn-primary">Add New employee</a>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -21,7 +21,7 @@
                                     <th> Status </th>
                                     <th> Profile Completed</th>
                                     <th> Created Date</th>
-                                    <th> Actions</th>
+                                    <th class=" text-center"> Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,11 +33,21 @@
                                         <td> {{ $value->user_name }} </td>
                                         <td> {{ $value->email }} </td>
                                         <td> {{ $value->profile }}</td>
-                                        <td> {{ Str::ucfirst($value->status) }} </td>
-                                        <td> {{ $value->is_porfile_completed ? 'Yes' : 'No' }}</td>
+                                        <td>
+                                            <div
+                                                class="badge badge-{{ $value->status == 'active' ? 'success' : 'danger' }}">
+                                                {{ Str::ucfirst($value->status) }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div
+                                                class="badge badge-{{ $value->is_porfile_completed ? 'success' : 'warning' }}">
+                                                {{ $value->is_porfile_completed ? 'Yes' : 'No' }}
+                                            </div>
+                                        </td>
                                         <td> {{ $carbon->parse($value->created_at)->format('d M , Y') }}</td>
                                         <td>
-                                            <div class="d-flex justify-content-between">
+                                            <div class="d-flex justify-content-around">
                                                 <a href="{{ route('edit.employee', ['id' => $value->id]) }}"><i
                                                         class="fa fa-pencil"></i></a>
                                                 <a href="{{ route('delete.employee', ['id' => $value->id]) }}"

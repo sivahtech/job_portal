@@ -5,11 +5,12 @@
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
-                    new</button>
                 <div class="card-body">
-                    <h4 class="card-title">Job Roles Details Table</h4>
-                    </p>
+                    <div class="d-flex justify-content-between">
+                        <h4 class="card-title">Job Roles Details Table</h4>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
+                            new</button>
+                    </div>
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -18,7 +19,7 @@
                                     <th> Name </th>
                                     <th> Status </th>
                                     <th> Created Date</th>
-                                    <th> Actions</th>
+                                    <th class=" text-center"> Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,7 +29,11 @@
                                             {{ $value->id }}
                                         </td>
                                         <td> {{ $value->name }} </td>
-                                        <td> {{ $value->status == 1 ? 'Active' : 'Deleted' }} </td>
+                                        <td>
+                                            <div class="badge badge-{{ $value->status == 1 ? 'success' : 'danger' }}">
+                                                {{ $value->status == 1 ? 'Active ' : 'Deleted' }}
+                                            </div>
+                                        </td>
                                         <td> {{ $carbon->parse($value->created_at)->format('d M , Y') }}</td>
                                         <td>
                                             <div class="d-flex justify-content-around">

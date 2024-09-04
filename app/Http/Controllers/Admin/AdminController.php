@@ -56,14 +56,14 @@ class AdminController extends Controller
     #--- Company ---#
     public function company(Request $request)
     {
-        $data = User::where('role', 'company')->latest()->withCount('job')->paginate(10);
+        $data = User::where('role', 'company')->latest()->withCount('job')->paginate(10)->appends($request->query());
         return view('admin.pages.companies', ['data' => $data]);
     }
 
     #--- Employees ---#
     public function employees(Request $request)
     {
-        $data = User::where('role', 'employee')->latest()->paginate(10);
+        $data = User::where('role', 'employee')->latest()->paginate(10)->appends($request->query());
         return view('admin.pages.employees', ['data' => $data]);
     }
 
@@ -72,7 +72,11 @@ class AdminController extends Controller
     {
         $jobData = new JobController();
         $data = $jobData->getJobData();
+        $data['companies'] = User::where(['role' => 'company', 'status' => 'active'])->get();
         $data['jobs'] = Job::with(['company'])
+            ->when($request->company, function ($query) use ($request) {
+                $query->where('user_id', $request->company);
+            })
             ->when($request->category, function ($query) use ($request) {
                 $query->where('job_category', $request->category);
             })
@@ -84,7 +88,7 @@ class AdminController extends Controller
                 $query->where(function ($q) use ($type) {
                     $q->orWhereJsonContains('job_type', $type);
                 });
-            })->latest()->paginate(25);
+            })->latest()->paginate(25)->appends($request->query());
         return view('admin.pages.jobs', ['data' => $data]);
     }
 
