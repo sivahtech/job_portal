@@ -155,10 +155,10 @@ class JobController extends Controller
 
     public function getJobData()
     {
-        $data['job_types'] = JobType::where('status', 1)->get();
-        $data['job_categories'] = JobCategory::where('status', 1)->get();
-        $data['job_roles'] = JobRole::where('status', 1)->get();
-        $data['job_industries'] = JobIndustry::where('status', 1)->get();
+        $data['job_types']          = JobType::where('status', 1)->get();
+        $data['job_categories']     = JobCategory::where('status', 1)->get();
+        $data['job_roles']          = JobRole::where('status', 1)->get();
+        $data['job_industries']     = JobIndustry::where('status', 1)->get();
 
         return $data;
     }
@@ -249,26 +249,26 @@ class JobController extends Controller
     {
         try {
             $job = Job::find($id);
-            $job->title = $request->job_title;
-            $job->job_role = $request->job_role;
-            $job->job_industry = $request->job_industry;
-            $job->job_category = $request->job_category;
-            $job->vacancies = $request->vacancies;
-            $job->experience = $request->experience;
-            $job->deadline = $request->deadline;
-            $job->description = $request->job_desc;
-            $job->salary_type = $request->salary_type;
-            $job->location = $this->getLocation($request);
+            $job->title                 = $request->job_title;
+            $job->job_role              = $request->job_role;
+            $job->job_industry          = $request->job_industry;
+            $job->job_category          = $request->job_category;
+            $job->vacancies             = $request->vacancies;
+            $job->experience            = $request->experience;
+            $job->deadline              = $request->deadline;
+            $job->description           = $request->job_desc;
+            $job->salary_type           = $request->salary_type;
+            $job->location              = $this->getLocation($request);
             if ($request->salary_type === 'range') {
-                $job->salary = $request->min_salary;
-                $job->max_salary = $request->max_salary;
+                $job->salary            = $request->min_salary;
+                $job->max_salary        = $request->max_salary;
             }
             if ($request->salary_type === 'fixed') {
-                $job->salary = $request->fixed_salary;
-                $job->max_salary = $request->fixed_salary;
+                $job->salary            = $request->fixed_salary;
+                $job->max_salary        = $request->fixed_salary;
             }
-            $job->job_type = json_encode($request->job_type);
-            $job->qualification = json_encode($request->qualification);
+            $job->job_type              = json_encode($request->job_type);
+            $job->qualification         = json_encode($request->qualification);
             $job->save();
 
             return redirect()->back()->with('success', 'Job updated successfully');
@@ -281,10 +281,10 @@ class JobController extends Controller
     function getSalary($request)
     {
         if ($request->salary_type == 'range') {
-            $salary = $request->min_salary . '-' . $request->max_salary;
+            $salary                = $request->min_salary . '-' . $request->max_salary;
         }
         if ($request->salary_type == 'fixed') {
-            $salary =  $request->fixed_salary;
+            $salary                =  $request->fixed_salary;
         }
         return $salary;
     }
@@ -298,56 +298,22 @@ class JobController extends Controller
      */
     public function jobDetails($id)
     {
-        $jobId = Crypt::decrypt($id);
-        $job = $this->getJob($jobId);
-        $check = AppliedJob::where('user_id', Auth::id())->where('job_id', $jobId)->exists();
+        $jobId  = Crypt::decrypt($id);
+        $job    = $this->getJob($jobId);
+        $check  = AppliedJob::where('user_id', Auth::id())->where('job_id', $jobId)->exists();
         return view('front.pages.job-details', ['job' => $job, 'check' => $check]);
     }
 
     public function myJobDetails($id)
     {
         if (Gate::allows('company')) {
-            $jobId = Crypt::decrypt($id);
-            $job = Job::find($jobId);
-            $job->users = AppliedJob::where(['job_id' => $jobId])->with(['user.country', 'user.state', 'user.city'])->paginate(20);
+            $jobId          = Crypt::decrypt($id);
+            $job            = Job::find($jobId);
+            $job->users     = AppliedJob::where(['job_id' => $jobId])->with(['user.country', 'user.state', 'user.city'])->paginate(20);
 
             return view('front.pages.single-job-details', ['job' => $job]);
         }
         abort(403);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Job  $job
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Job $job)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Job  $job
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Job $job)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Job  $job
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Job $job)
-    {
-        //
     }
 
     #--- Apply jobs -----#
@@ -362,9 +328,9 @@ class JobController extends Controller
             return redirect()->back()->with(['warning' => 'You have already applied ']);
         }
         try {
-            $applyJob = new AppliedJob();
-            $applyJob->user_id = Auth::id();
-            $applyJob->job_id =  Crypt::decrypt($request->id);
+            $applyJob               = new AppliedJob();
+            $applyJob->user_id      = Auth::id();
+            $applyJob->job_id       =  Crypt::decrypt($request->id);
             $applyJob->cover_letter = $request->letter;
             if ($request->file('resume')) {
                 $applyJob->resume = $this->uploadMedia($request->file('resume'), 'resumes');

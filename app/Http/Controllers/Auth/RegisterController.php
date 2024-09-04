@@ -43,25 +43,20 @@ class RegisterController extends Controller
     {
         $request->validate($this->validationRules($request->input('role')));
         try {
-            $user = new User();
-            $user->token = Str::random(15);
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
-            $user->user_name = $request->user_name;
-            $user->role = $request->role;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->company_name = $request->company_name;
-            $user->company_type = $request->company_type;
+            $user                = new User();
+            $user->token         = Str::random(15);
+            $user->first_name    = $request->first_name;
+            $user->last_name     = $request->last_name;
+            $user->user_name     = $request->user_name;
+            $user->role          = $request->role;
+            $user->email         = $request->email;
+            $user->password      = Hash::make($request->password);
+            $user->company_name  = $request->company_name;
+            $user->company_type  = $request->company_type;
             $user->save();
 
             Auth::login($user);
-            // if ($user->role === 'employee') {
-                return redirect()->route('profile')->with('success', 'Registration successful');
-            // }
-            // if ($user->role === 'company') {
-            //     return redirect()->route('find.candidates')->with('success', 'Registration successful');
-            // }
+            return redirect()->route('profile')->with('success', 'Registration successful');
         } catch (Exception $e) {
             dd($e->getMessage());
             abort(400);

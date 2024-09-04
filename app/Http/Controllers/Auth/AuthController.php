@@ -25,10 +25,10 @@ class AuthController extends Controller
     public function index(Request $request)
     {
         if (!Auth::check() || (auth()->check() && (auth()->user()->role == 'employee' || auth()->user()->role == 'company'))) {
-            $jobs = new JobController();
-            $data = $jobs->getJobs($request, 4);
+            $jobs       = new JobController();
+            $data       = $jobs->getJobs($request, 4);
             if (Gate::allows('company')) {
-                $data = $jobs->getEmp($request, 6);
+                $data   = $jobs->getEmp($request, 6);
                 return view('front.pages.index', ['data' => $data]);
             }
             return view('front.pages.index', ['jobs' => $data]);
@@ -79,8 +79,8 @@ class AuthController extends Controller
     #--- get Countries ---#
     public function getCountries(Request $request)
     {
-        $search = $request->input('search');
-        $countries = Country::select('id', 'name as text')
+        $search     = $request->input('search');
+        $countries  = Country::select('id', 'name as text')
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%");
             })
@@ -91,8 +91,8 @@ class AuthController extends Controller
 
     public function getStates(Request $request)
     {
-        $search = $request->input('search');
-        $countryId = $request->input('country_id');
+        $search     = $request->input('search');
+        $countryId  = $request->input('country_id');
 
         $states = State::select('id', 'name as text')
             ->where('country_id', $countryId)
@@ -106,10 +106,10 @@ class AuthController extends Controller
 
     public function getCities(Request $request)
     {
-        $search = $request->input('search');
-        $stateId = $request->input('state_id');
+        $search     = $request->input('search');
+        $stateId    = $request->input('state_id');
 
-        $cities = City::select('id', 'name as text')
+        $cities     = City::select('id', 'name as text')
             ->where('state_id', $stateId)
             ->when($search, function ($query, $search) {
                 return $query->where('name', 'like', "%{$search}%");

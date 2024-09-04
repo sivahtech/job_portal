@@ -70,10 +70,10 @@ class AdminController extends Controller
     #--- Jobs ---#
     public function jobs(Request $request)
     {
-        $jobData = new JobController();
-        $data = $jobData->getJobData();
-        $data['companies'] = User::where(['role' => 'company', 'status' => 'active'])->get();
-        $data['jobs'] = Job::with(['company'])
+        $jobData             = new JobController();
+        $data                = $jobData->getJobData();
+        $data['companies']   = User::where(['role' => 'company', 'status' => 'active'])->get();
+        $data['jobs']        = Job::with(['company'])
             ->when($request->company, function ($query) use ($request) {
                 $query->where('user_id', $request->company);
             })

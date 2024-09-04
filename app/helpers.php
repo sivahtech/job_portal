@@ -11,3 +11,20 @@ if (!function_exists('jobDeadLineCheck')) {
         return false;
     }
 }
+
+
+if (!function_exists('formatExperience')) {
+    function formatExperience($experience)
+    {
+        $experience = trim($experience);
+        if (stripos($experience, 'year') !== false) {
+            return $experience;
+        }
+        $years = (int) $experience;
+        if ($years === 1) {
+            return $experience . ' Year';
+        } else {
+            return $experience . ' Years';
+        }
+    }
+}

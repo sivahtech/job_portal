@@ -39,6 +39,9 @@ class ProfileCompleteRequest extends FormRequest
             $rules['industry'] = 'required';
             $rules['profile'] = 'required';
             $rules['qualification'] = 'required';
+            if (Auth::user()->loginType == 2) {
+                $rules['password'] = 'required|min:6';
+            }
         }
 
         return $rules;

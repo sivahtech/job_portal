@@ -30,14 +30,14 @@ class socialLoginController extends Controller
             if ($user) {
                 $socialDetails = UserSocialDetails::where(['user_id' => $user->id, 'provider' => $provider, 'provider_id' => $userSocial->getId()])->first();
                 if (empty($socialDetails)) {
-                    $userSocialDetails  = new UserSocialDetails();
-                    $userSocialDetails->user_id = $user->id;
+                    $userSocialDetails              = new UserSocialDetails();
+                    $userSocialDetails->user_id     = $user->id;
                     $userSocialDetails->provider_id = $userSocial->getId();
-                    $userSocialDetails->provider = $provider;
-                    $userSocialDetails->token =  $userSocial->token;
+                    $userSocialDetails->provider    = $provider;
+                    $userSocialDetails->token       =  $userSocial->token;
                     $userSocialDetails->save();
                 }
-            } else {
+            } else { 
                 $userData =  $userSocial->user;
 
                 $user                       = new User();
@@ -50,11 +50,11 @@ class socialLoginController extends Controller
                 $user->token                = Str::random(15);
                 $user->save();
                 if ($user) {
-                    $userSocialDetails  = new UserSocialDetails();
-                    $userSocialDetails->user_id = $user->id;
-                    $userSocialDetails->provider_id = $userSocial->getId();
-                    $userSocialDetails->provider = $provider;
-                    $userSocialDetails->token =  $userSocial->token;
+                    $userSocialDetails               = new UserSocialDetails();
+                    $userSocialDetails->user_id      = $user->id;
+                    $userSocialDetails->provider_id  = $userSocial->getId();
+                    $userSocialDetails->provider     = $provider;
+                    $userSocialDetails->token        =  $userSocial->token;
                     $userSocialDetails->save();
                 }
             }
@@ -131,11 +131,11 @@ class socialLoginController extends Controller
         $user->back_image    = config('user.user.back_image');
         $user->save();
         if ($user) {
-            $userSocialDetails  = new userSocialDetails();
-            $userSocialDetails->user_id = $user->id;
-            $userSocialDetails->provider_id = $profileData['id'];
-            $userSocialDetails->provider = 'instagram';
-            $userSocialDetails->token =  $accessToken;
+            $userSocialDetails                  = new userSocialDetails();
+            $userSocialDetails->user_id         = $user->id;
+            $userSocialDetails->provider_id     = $profileData['id'];
+            $userSocialDetails->provider        = 'instagram';
+            $userSocialDetails->token           =  $accessToken;
             $userSocialDetails->save();
         }
 

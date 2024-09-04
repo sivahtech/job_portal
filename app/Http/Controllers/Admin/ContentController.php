@@ -228,26 +228,26 @@ class ContentController extends Controller
 
         try {
             if ($request->id) {
-                $company = User::find($request->id);
-                $company->status = $request->status;
-                $msg = 'company  updated successful';
+                $company            = User::find($request->id);
+                $company->status    = $request->status;
+                $msg                = 'company  updated successful';
             } else {
-                $company = new User();
-                $msg = 'company created successful';
+                $company            = new User();
+                $msg                = 'company created successful';
             }
-            $company->role = 'company';
-            $company->token = Str::random(15);
-            $company->first_name = $request->first_name;
-            $company->last_name = $request->last_name;
-            $company->user_name = $request->user_name;
+            $company->role          = 'company';
+            $company->token         = Str::random(15);
+            $company->first_name    = $request->first_name;
+            $company->last_name     = $request->last_name;
+            $company->user_name     = $request->user_name;
             if (!empty($request->email)) {
-                $company->email = $request->email;
+                $company->email     = $request->email;
             }
             if ($request->password) {
-                $company->password = Hash::make($request->password);
+                $company->password  = Hash::make($request->password);
             }
-            $company->company_name = $request->company_name;
-            $company->company_type = $request->company_type;
+            $company->company_name  = $request->company_name;
+            $company->company_type  = $request->company_type;
             $company->save();
 
             return redirect()->back()->with('success', $msg);
@@ -308,19 +308,18 @@ class ContentController extends Controller
                 $employee = new User();
                 $msg = 'employee created successful';
             }
-            $employee->role = 'employee';
-            $employee->token = Str::random(15);
-            $employee->first_name = $request->first_name;
-            $employee->last_name = $request->last_name;
-            $employee->user_name = $request->user_name;
+            $employee->role          = 'employee';
+            $employee->token         = Str::random(15);
+            $employee->first_name    = $request->first_name;
+            $employee->last_name     = $request->last_name;
+            $employee->user_name     = $request->user_name;
             if (!empty($request->email)) {
-                $employee->email = $request->email;
+                $employee->email     = $request->email;
             }
             if ($request->password) {
                 $employee->password = Hash::make($request->password);
             }
             $employee->save();
-
             return redirect()->back()->with('success', $msg);
         } catch (Exception $e) {
             return redirect()->back()->with('error', 'something went wrong');
@@ -360,31 +359,31 @@ class ContentController extends Controller
     public function updateJob(JobRequest $request, $jobId)
     {
         try {
-            $job = Job::find($jobId);
-            $job->title = $request->job_title;
-            $job->job_role = $request->job_role;
-            $job->job_industry = $request->job_industry;
-            $job->job_category = $request->job_category;
-            $job->vacancies = $request->vacancies;
-            $job->experience = $request->experience;
-            $job->deadline = $request->deadline;
-            $job->description = $request->job_desc;
-            $job->salary_type = $request->salary_type;
+            $job                     = Job::find($jobId);
+            $job->title              = $request->job_title;
+            $job->job_role           = $request->job_role;
+            $job->job_industry       = $request->job_industry;
+            $job->job_category       = $request->job_category;
+            $job->vacancies          = $request->vacancies;
+            $job->experience         = $request->experience;
+            $job->deadline           = $request->deadline;
+            $job->description        = $request->job_desc;
+            $job->salary_type        = $request->salary_type;
             if ($request->location == 'other_location') {
-                $location = $this->getCity($request->city) . ',' . $this->getState($request->state) . ',' . $this->getCountry($request->country);
-                $job->location = $location;
+                $location            = $this->getCity($request->city) . ',' . $this->getState($request->state) . ',' . $this->getCountry($request->country);
+                $job->location       = $location;
             }
             if ($request->salary_type === 'range') {
-                $job->salary = $request->min_salary;
-                $job->max_salary = $request->max_salary;
+                $job->salary         = $request->min_salary;
+                $job->max_salary     = $request->max_salary;
             }
             if ($request->salary_type === 'fixed') {
-                $job->salary = $request->fixed_salary;
-                $job->max_salary = $request->fixed_salary;
+                $job->salary         = $request->fixed_salary;
+                $job->max_salary     = $request->fixed_salary;
             }
             $job->status = $request->status ?? 1;
-            $job->job_type = json_encode($request->job_type);
-            $job->qualification = json_encode($request->qualification);
+            $job->job_type           = json_encode($request->job_type);
+            $job->qualification      = json_encode($request->qualification);
             $job->save();
 
             return redirect()->back()->with('success', 'Job updated successfully');
@@ -397,12 +396,11 @@ class ContentController extends Controller
     public function editJob($id)
     {
         if ($id) {
-            $job =  new JobController();
-
-            $data =  $job->getJobData();
-            $data['title'] = 'Update Job';
-            $data['job'] = Job::find($id);
-            $data['qualifications'] = Qualification::where('status', true)->get();
+            $job                     =  new JobController();
+            $data                    =  $job->getJobData();
+            $data['title']           = 'Update Job';
+            $data['job']             = Job::find($id);
+            $data['qualifications']  = Qualification::where('status', true)->get();
 
             return view('admin.pages.edit-job', ['data' => $data]);
         }
