@@ -222,7 +222,7 @@ class ContentController extends Controller
             'user_name' => ['required'],
             'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($request->id)],
             'password' => ['min:6',  $request->id ? 'nullable' : 'required'],
-            'status' => [$request->id ? 'nullable' : 'required'],
+            'status' => [$request->id ? 'required' : 'nullable'],
             'company_type' => ['required'],
         ]);
 
