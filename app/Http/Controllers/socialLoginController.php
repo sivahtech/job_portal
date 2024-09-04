@@ -41,8 +41,8 @@ class socialLoginController extends Controller
                 $userData =  $userSocial->user;
 
                 $user                       = new User();
-                $user->first_name           = $userData['given_name'] ?? $userSocial->getName();
-                $user->last_name            = $userData['family_name'] ? $userData['family_name'] : $userData['given_name'] ?? $userSocial->getName();
+                $user->first_name           = isset($userData['given_name']) ? $userData['given_name'] : $userSocial->getName();
+                $user->last_name            = isset($userData['family_name']) ? $userData['family_name'] : (isset($userData['given_name']) ? $userData['given_name'] : $userSocial->getName());
                 $user->user_name            = $userSocial->getName();
                 $user->password             = Hash::make(123456);
                 $user->email                = $userSocial->getEmail();
