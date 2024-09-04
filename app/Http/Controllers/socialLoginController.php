@@ -38,7 +38,6 @@ class socialLoginController extends Controller
                     $userSocialDetails->save();
                 }
             } else {
-
                 $userData =  $userSocial->user;
 
                 $user                       = new User();
@@ -71,6 +70,7 @@ class socialLoginController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
+            dd($e);
             return redirect()->route('login')->with('error', 'Something went wrong');
         }
     }
