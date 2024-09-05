@@ -150,6 +150,8 @@ class socialLoginController extends Controller
             } else {
                 $socialDetails->token           =  $accessToken;
                 $socialDetails->save();
+
+                $user = User::find($socialDetails->user_id);
             }
             Auth::login($user);
             User::where('id', Auth::id())->update(['loginType' => 2]);
@@ -161,6 +163,6 @@ class socialLoginController extends Controller
                 return redirect()->route('profile')->with('success', 'Login successfull');
             }
         }
-        return redirect()->route('login')->with('error','Something went wrong');
+        return redirect()->route('login')->with('error', 'Something went wrong');
     }
 }
