@@ -125,10 +125,8 @@ class socialLoginController extends Controller
 
         $user                = new User();
         $user->name          = $name;
-        // $user->nickname      = generateNickname($name);
         $user->password      = Hash::make(123456);
-        $user->image         = config('user.user.image');
-        $user->back_image    = config('user.user.back_image');
+       
         $user->save();
         if ($user) {
             $userSocialDetails                  = new userSocialDetails();
