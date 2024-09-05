@@ -151,15 +151,16 @@ class socialLoginController extends Controller
                 $socialDetails->token           =  $accessToken;
                 $socialDetails->save();
             }
-        }
+            Auth::login($user);
+            User::where('id', Auth::id())->update(['loginType' => 2]);
 
-        Auth::login($user);
-        User::where('id', Auth::id())->update(['loginType' => 2]);
 
-        if (Auth::user()->is_profile_completed) {
-            return redirect()->route('index');
-        } else {
-            return redirect()->route('profile')->with('success', 'Login successfull');
+            if (Auth::user()->is_profile_completed) {
+                return redirect()->route('index');
+            } else {
+                return redirect()->route('profile')->with('success', 'Login successfull');
+            }
         }
+        return redirect()->route('login')->with('error','Something went wrong');
     }
 }
