@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 
 class AuthController extends Controller
-{
+{ 
     #--- load index blade file ---#
     public function index(Request $request)
     {

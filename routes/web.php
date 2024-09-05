@@ -47,8 +47,12 @@ Route::get('get-country', [AuthController::class, 'getCountries'])->name('countr
 Route::get('get-states/', [AuthController::class, 'getStates'])->name('state');
 Route::get('get-cities/', [AuthController::class, 'getCities'])->name('city');
 Route::get('job-details/{id}', [JobController::class, 'jobDetails'])->name('job.details');
-Route::get('/login/{social}', [socialLoginController::class, 'index'])->where('social', 'facebook|google|instagram');
-Route::get('/login/{social}/callback', [socialLoginController::class, 'store'])->where('social', 'facebook|google|instagram');
+
+Route::get('/login/instagram', [socialLoginController::class, 'redirectToInstagram']);
+Route::get('/login/instagram/callback', [socialLoginController::class, 'handleInstagramCallback']);
+
+Route::get('/login/{social}', [socialLoginController::class, 'index'])->where('social', 'facebook|google|instagram|linkedin');
+Route::get('/login/{social}/callback', [socialLoginController::class, 'store'])->where('social', 'facebook|google|instagram|linkedin');
 
 
 Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');

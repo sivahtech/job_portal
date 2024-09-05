@@ -27,4 +27,41 @@
         integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     @yield('style')
+
+    <style>
+        .dashbor_media {
+            display: flex;
+            background: var(--lightblue);
+            padding: 40px 20px;
+            border-radius: 8px;
+            color: #263f91;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+            width: 100%;
+            align-items: center;
+            border-bottom: 2px solid #263F91;
+            justify-content: space-between;
+        }
+
+        span.dash_icon img {
+            width: 50px;
+        }
+
+        span.dash_icon {
+            height: 70px;
+            width: 70px;
+            line-height: 70px;
+            min-width: 70px;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            background: #263f915c;
+            justify-content: center;
+        }
+
+        .dashbord_leftsec {
+            margin-top: 30px;
+        }
+    </style>
 </head>

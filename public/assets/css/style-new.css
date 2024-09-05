@@ -1319,3 +1319,8 @@ ul.profiles {
 ul.pagination.nxt_priv {
     list-style: none !important;
 }
+/* 05-09-2024 */
+
+input#resume , input#imageInput{
+    height: auto;
+}

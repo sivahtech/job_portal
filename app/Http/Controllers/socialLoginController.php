@@ -18,6 +18,7 @@ class socialLoginController extends Controller
 {
     public function index($social)
     {
+        return Socialite::driver('linkedin')->redirect();
         return Socialite::driver($social)->redirect();
     }
 

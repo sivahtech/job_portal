@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{{ asset('assets/css/style-new.css') }}">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css" rel="stylesheet">
+
 
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.24.0/contents.min.css" integrity="sha512-HK3G0WJTxeYhsh/hzS/1NDmqw1uZplDy2w2Z60xHPTytEKEpSSXF9DsXytkUNLh7AyPeBvyVSpz4+kRCxTDYqQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
