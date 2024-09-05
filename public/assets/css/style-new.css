@@ -1321,6 +1321,41 @@ ul.pagination.nxt_priv {
 }
 /* 05-09-2024 */
 
-input#resume , input#imageInput{
+input#resume,
+input#imageInput {
     height: auto;
+}
+
+li.page-item.disabled span.page-link.button,
+li.page-item.disabled span.page-link.button:hover {
+    background: #deb56b !important;
+    border: 1px solid #deb56b;
+}
+
+.filter:last-child h5:before {
+    display: none;
+}
+main {
+    min-height: calc(100vh - 300px);
+}
+
+.adv-input {
+    overflow: scroll !important;
+}
+
+ul.menu li:hover .sub-menu {
+    display: flex;
+    gap: 0px !important;
+}
+ul.profiles li.name:hover {
+    background: #00000000;
+}
+ul.profiles li:hover {
+    background: #deb56b;
+}
+ul.sub-menu.profiles {
+    padding: 0px;
+}
+ul.sub-menu.profiles li {
+    padding: 10px;
 }

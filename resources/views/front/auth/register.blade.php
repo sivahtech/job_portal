@@ -123,7 +123,34 @@
                         <input type="submit" class="button" value="Sign Up">
                     </div>
                     <p class="inline-text">Already have an account? <a href="{{ route('login') }}">Login</a> Here</p>
-                    <p class="inline-text"><a href="{{ url('login/google') }}" class="google-btns"><img src="{{ asset('assets/images/google.png') }}" alt="Google Logo"> Continue with Google</a></p>
+                    {{-- <p class="inline-text"><a href="{{ url('login/google') }}" class="google-btns"><img src="{{ asset('assets/images/google.png') }}" alt="Google Logo"> Continue with Google</a></p> --}}
+
+                    <div class="row">
+                        <div class="col-3">
+                            <div>
+                                <a href="{{ url('login/google') }}" class="btn btn-soft-danger w-100"><i
+                                        class="mdi mdi-google"></i>Google </a>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div>
+                                <a href="{{ url('login/facebook') }}" class="btn btn-soft-info w-100"><i
+                                        class="mdi mdi-facebook"></i>Facebook</a>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div>
+                                <a href="{{ url('login/instagram') }}" class="btn btn-soft-danger w-100"><i
+                                        class="mdi mdi-instagram"></i>Instagram</a>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div>
+                                <a href="{{ url('login/linkedin') }}" class="btn btn-soft-danger w-100"><i
+                                        class="mdi mdi-linkedin"></i>LinkedIn</a>
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
