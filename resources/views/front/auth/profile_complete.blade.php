@@ -11,6 +11,21 @@
                         enctype="multipart/form-data" autocomplete="off" novalidate>
                         @csrf
                         @can('employee')
+                            @if (Auth::user()->loginType == 2 && empty(Auth::user()->email))
+                                <div class="inline">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <div class="adv-input">
+                                            <i class="fa fa-envelope"></i><input type="email" id="email" name="email"
+                                                class="form-input  @error('email') is-invalid @enderror" placeholder="Email">
+                                        </div>
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            @endif
+
                             <div class="inline">
                                 <div class="form-group">
                                     <label for="profile">Job Profile</label>
@@ -106,8 +121,8 @@
                         <div class="inline">
                             <div class="form-group">
                                 <label for="city">City</label>
-                                <select name="city" id="city" class="form-input @error('city') is-invalid @enderror"
-                                    required>
+                                <select name="city" id="city"
+                                    class="form-input @error('city') is-invalid @enderror" required>
 
                                 </select>
                                 @error('city')

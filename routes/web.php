@@ -55,8 +55,8 @@ Route::get('/login/{social}', [socialLoginController::class, 'index'])->where('s
 Route::get('/login/{social}/callback', [socialLoginController::class, 'store'])->where('social', 'facebook|google|instagram|linkedin');
 
 
-Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 Route::middleware(['auth', 'user.check'])->group(function () {
+    Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
     Route::get('/settings', [UserController::class, 'settings'])->name('settings');
     Route::get('/download-resume', [UserController::class, 'getDownload'])->name('download.resume');
     Route::post('/profile', [UserController::class, 'completeProfile'])->name('profile.post');

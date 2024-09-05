@@ -34,7 +34,7 @@ class UserController extends Controller
             $data['qualifications'] = Qualification::all();
             return view('front.auth.profile_complete', ['data' => $data]);
         }
-        abort(403);
+        return redirect()->route('index');
     }
 
     public function settings(Request $request)
@@ -73,7 +73,7 @@ class UserController extends Controller
                 $image                  = $this->resizeImage($request->file('image'));
                 $user->image            = $image;
             }
-            $user->is_porfile_completed = true;
+            $user->is_profile_completed = true;
             $user->save();
 
             if ($request->file('resume')) {
@@ -181,8 +181,8 @@ class UserController extends Controller
         if ($request->file) {
             $file            = $request->file;
             $headers         = array(
-                                    'Content-Type: application/pdf',
-                                );
+                'Content-Type: application/pdf',
+            );
             if (Storage::exists($file)) {
                 return Storage::download($file, 'resume.pdf', $headers);
             }

@@ -42,6 +42,9 @@ class ProfileCompleteRequest extends FormRequest
             if (Auth::user()->loginType == 2) {
                 $rules['password'] = 'required|min:6';
             }
+            if (Auth::user()->loginType == 2 && empty(Auth::user()->email)) {
+                $rules['email'] = 'required|email|unique:users,email';
+            }
         }
 
         return $rules;

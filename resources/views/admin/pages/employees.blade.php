@@ -41,8 +41,8 @@
                                         </td>
                                         <td>
                                             <div
-                                                class="badge badge-{{ $value->is_porfile_completed ? 'success' : 'warning' }}">
-                                                {{ $value->is_porfile_completed ? 'Yes' : 'No' }}
+                                                class="badge badge-{{ $value->is_profile_completed ? 'success' : 'warning' }}">
+                                                {{ $value->is_profile_completed ? 'Yes' : 'No' }}
                                             </div>
                                         </td>
                                         <td> {{ $carbon->parse($value->created_at)->format('d M , Y') }}</td>

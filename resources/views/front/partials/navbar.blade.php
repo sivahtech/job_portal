@@ -61,7 +61,7 @@
                              <li class="name">
                                  <h5>{{ Str::ucfirst(Auth::user()->user_name) }}</h5>
                              </li>
-                             @if (Auth::user()->is_porfile_completed)
+                             @if (Auth::user()->is_profile_completed)
                                  <li><a href="{{ route('settings') }}">Profile Setting</a></li>
                              @else
                                  <li><a href="{{ route('profile') }}">Profile complete</a></li>

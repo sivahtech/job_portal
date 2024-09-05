@@ -50,7 +50,7 @@
                         @endisset
                     </div>
                     <div class="list">
-                        @if ($user->is_porfile_completed)
+                        @if ($user->is_profile_completed)
                             <div class="content">
                                 <p class="list-head">Location:</p>
                                 @if (isset($user->city) && isset($user->state))

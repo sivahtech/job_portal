@@ -182,7 +182,7 @@
                 </div>
                 <div class="form-group">
                     <div class="radio inline">
-                        @if (Auth::user()->is_porfile_completed)
+                        @if (Auth::user()->is_profile_completed)
                         <label><input type="radio" name="location" value="current_location" class="form-input " {{ old('location') == 'current_location'?'checked':'checked' }}>location</label>
                         <label><input type="radio" name="location" value="other_location" class="form-input " {{ old('location') == 'other_location'?'checked':'' }}>{{ isset($job) ? 'Update':'Other' }} location</label>
                         @else
@@ -190,7 +190,7 @@
                         @endif
                     </div>
 
-                    @if (Auth::user()->is_porfile_completed || $job)
+                    @if (Auth::user()->is_profile_completed || $job)
                     <div class="inline" id="profile-details-wrap">
                         <div>
                             @isset($company)
@@ -204,7 +204,7 @@
                     @endif
 
 
-                    <div class="inline {{(Auth::user()->is_porfile_completed)?(old('location') == 'other_location'?'':'d-none'):'' }} " id="locations-wrap">
+                    <div class="inline {{(Auth::user()->is_profile_completed)?(old('location') == 'other_location'?'':'d-none'):'' }} " id="locations-wrap">
                         <div class="form-group">
                             <select name="country" id="country" class="form-control select-wrap">
                                 <option value="">Select Country</option>

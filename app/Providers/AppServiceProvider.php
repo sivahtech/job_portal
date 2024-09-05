@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Gate::define('profile_status', function (User $user) {
-            return $user->is_porfile_completed == 0;
+            return $user->is_profile_completed == 0;
         });
         Gate::define('employee', function (User $user) {
             return $user->role == 'employee';

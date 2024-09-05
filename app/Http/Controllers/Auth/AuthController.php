@@ -57,7 +57,7 @@ class AuthController extends Controller
 
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => ['company', 'employee']], $request->remember)) {
-                if (Auth::user()->is_porfile_completed) {
+                if (Auth::user()->is_profile_completed) {
                     return redirect()->route('index');
                 } else {
                     return redirect()->route('profile');

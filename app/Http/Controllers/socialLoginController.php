@@ -37,7 +37,7 @@ class socialLoginController extends Controller
                     $userSocialDetails->token       =  $userSocial->token;
                     $userSocialDetails->save();
                 }
-            } else { 
+            } else {
                 $userData =  $userSocial->user;
 
                 $user                       = new User();
@@ -63,7 +63,7 @@ class socialLoginController extends Controller
             Auth::login($user);
             User::where('id', Auth::id())->update(['loginType' => 2]);
 
-            if (Auth::user()->is_porfile_completed) {
+            if (Auth::user()->is_profile_completed) {
                 return redirect()->route('index');
             } else {
                 return redirect()->route('profile')->with('success', 'Login successfull');
@@ -123,23 +123,39 @@ class socialLoginController extends Controller
 
         $name = str_replace(' ', '_', $profileData['username']);
 
-        $user                = new User();
-        $user->name          = $name;
-        $user->password      = Hash::make(123456);
-       
-        $user->save();
-        if ($user) {
-            $userSocialDetails                  = new userSocialDetails();
-            $userSocialDetails->user_id         = $user->id;
-            $userSocialDetails->provider_id     = $profileData['id'];
-            $userSocialDetails->provider        = 'instagram';
-            $userSocialDetails->token           =  $accessToken;
-            $userSocialDetails->save();
+        if ($profileData) {
+            $socialDetails = UserSocialDetails::where(['provider' => 'instagram', 'provider_id' => $profileData['id']])->first();
+            if (empty($socialDetails)) {
+                $user                       = new User();
+                $user->first_name           = $name;
+                $user->last_name            = $name;
+                $user->user_name            = $name;
+                $user->role                 = 'employee';
+                $user->password             = Hash::make(123456);
+                $user->token                = Str::random(15);
+                $user->save();
+
+                if ($user) {
+                    $userSocialDetails                  = new userSocialDetails();
+                    $userSocialDetails->user_id         = $user->id;
+                    $userSocialDetails->provider_id     = $profileData['id'];
+                    $userSocialDetails->provider        = 'instagram';
+                    $userSocialDetails->token           =  $accessToken;
+                    $userSocialDetails->save();
+                }
+            } else {
+                $socialDetails->token           =  $accessToken;
+                $socialDetails->save();
+            }
         }
 
         Auth::login($user);
         User::where('id', Auth::id())->update(['loginType' => 2]);
 
-        return redirect()->route('profile');
+        if (Auth::user()->is_profile_completed) {
+            return redirect()->route('index');
+        } else {
+            return redirect()->route('profile')->with('success', 'Login successfull');
+        }
     }
 }
