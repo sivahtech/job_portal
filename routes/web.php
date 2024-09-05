@@ -52,7 +52,7 @@ Route::get('/login/instagram', [socialLoginController::class, 'redirectToInstagr
 Route::get('/login/instagram/callback', [socialLoginController::class, 'handleInstagramCallback']);
 
 Route::get('/login/{social}', [socialLoginController::class, 'index'])->where('social', 'facebook|google|instagram|linkedin');
-Route::get('/login/{social}/callback', [socialLoginController::class, 'store'])->where('social', 'facebook|google|instagram|linkedin');
+Route::get('/login/{social}/callback', [socialLoginController::class, 'store'])->where('social', 'facebook|google|instagram|linkedin-openid');
 
 
 Route::middleware(['auth', 'user.check'])->group(function () {

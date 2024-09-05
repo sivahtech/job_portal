@@ -47,7 +47,7 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect'      => env('GOOGLE_REDIRECT_LINK'),
     ],
-    'linkedin' => [
+    'linkedin-openid' => [
         'client_id'     => env('LINKEDIN_CLIENT_ID'),
         'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
         'redirect'      => env('LINKEDIN_REDIRECT_LINK'),

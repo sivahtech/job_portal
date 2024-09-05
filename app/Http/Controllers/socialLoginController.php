@@ -18,6 +18,10 @@ class socialLoginController extends Controller
 {
     public function index($social)
     {
+        if ($social === 'linkedin') {
+            return Socialite::driver('linkedin-openid')->scopes(['openid', 'profile', 'email'])->redirect();
+        }
+
         return Socialite::driver($social)->redirect();
     }
 
