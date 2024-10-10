@@ -27,7 +27,7 @@ body {
     font-size: 16px;
     margin: 0px;
     font-family: var(--secondary-font);
-    color:red;
+  
 }
 h1,
 h2,
@@ -1360,3 +1360,13 @@ ul.sub-menu.profiles {
 ul.sub-menu.profiles li {
     padding: 10px;
 }
+/* 09-10-2024*/
+
+.invalid-feedback {
+    /*display: none;*/
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 16px;
+    color: var(--bs-form-invalid-color);
+    color:#dc3545!important;
+  }

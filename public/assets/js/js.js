@@ -55,6 +55,7 @@ $(document).ready(function(){
             }
         }
     });
+  
     
     $('.salary label:nth-child(1)').click(function(){
         $('#fixed_salary').addClass('show').siblings().removeClass('show');
@@ -65,4 +66,6 @@ $(document).ready(function(){
     $('.salary label:nth-child(3)').click(function(){
         $('.extra-fields .conditional-field').removeClass('show');
     });
+
+   
 });

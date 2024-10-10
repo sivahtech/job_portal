@@ -49,12 +49,12 @@ class AuthController extends Controller
     #--- login ---#
     public function checkAuth(Request $request)
     {
-
+   
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
-
+    
         try {
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password, 'role' => ['company', 'employee']], $request->remember)) {
                 if (Auth::user()->is_profile_completed) {

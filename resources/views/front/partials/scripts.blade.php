@@ -42,5 +42,22 @@
         @endif
 
     });
-
+       //sweetalert
+       $('#confirm_login').click(function(){  
+        event.preventDefault(); // Prevent default action
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you really want to log out?",
+                icon: "question",  // Change to a more appropriate icon for logout
+                showCancelButton: true,
+                confirmButtonColor: "#deb56b", // Confirm button color
+                cancelButtonColor: "#000",      // Cancel button color
+                confirmButtonText: "Yes, log out!",
+                cancelButtonText: "No, stay logged in"
+                }).then((result) => {
+                if (result.isConfirmed) {
+                window.location.href = "{{ route('logout') }}"; // Change this to your login URL
+                }
+            });
+     });
 </script>

@@ -72,7 +72,10 @@
                              @can('employee')
                                  <li><a href="{{ route('applied.jobs') }}">Applied Jobs</a></li>
                              @endcan
-                             <li> <a href="{{ route('logout') }}" onclick="return confirm('Are you sure?')">Logout</a></li>
+                             <li> 
+                                <a  id="confirm_login">Logout</a></li>
+                           
+                             {{-- href="{{ route('logout') }}" onclick="return confirm('Are you sure?')" --}}
                          </ul>
                      </li>
                  </ul>
