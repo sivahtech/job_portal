@@ -11260,7 +11260,8 @@ textarea.is-valid.tt-hint, .select2-container--default .select2-selection--singl
   width: 100%;
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: var(--bs-form-invalid-color);
+  /* color: var(--bs-form-invalid-color); */
+  color:#dc3545!important;
 }
 
 .invalid-tooltip {

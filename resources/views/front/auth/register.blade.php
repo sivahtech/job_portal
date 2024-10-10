@@ -125,7 +125,7 @@
                     <p class="inline-text">Already have an account? <a href="{{ route('login') }}">Login</a> Here</p>
                     {{-- <p class="inline-text"><a href="{{ url('login/google') }}" class="google-btns"><img src="{{ asset('assets/images/google.png') }}" alt="Google Logo"> Continue with Google</a></p> --}}
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-3">
                             <div>
                                 <a href="{{ url('login/google') }}" class="btn btn-soft-danger w-100"><i
@@ -150,7 +150,12 @@
                                         class="mdi mdi-linkedin"></i>LinkedIn</a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+
+                    <p class="inline-text"><a href="{{ url('login/google') }}" class="google-btns"><img src="{{ asset('assets/images/google.png') }}">Continue with Google</a></p>
+                    <p class="inline-text"><a href="{{ url('login/facebook') }}" class="google-btns"><i class="fa fa-facebook" aria-hidden="true"></i>
+                        Continue with Facebook</a></p>
+
                 </form>
             </div>
         </div>

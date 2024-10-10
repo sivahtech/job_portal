@@ -134,7 +134,7 @@
                   
                     {{-- <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-calendar-check-outline text-primary me-2"></i> Activity</a> --}}
                   
-                    <a class="dropdown-item" href="{{ route('admin.logout') }}" onclick="return confirm('Are you sure?')"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+                    <a class="dropdown-item" href="{{ route('admin.logout') }}"  onclick="return confirm('Are you sure?')"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
                 </div>
             </li>
         </ul>

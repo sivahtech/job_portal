@@ -53,7 +53,7 @@
                         <input type="submit" class="button" value="Login">
                     </div>
                     <p class="inline-text">Don’t have an account? <a href="{{ route('register') }}">Sign Up</a> Here</p>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-3">
                             <div>
                                 <a href="{{ url('login/google') }}" class="btn btn-soft-danger w-100"><i
@@ -78,7 +78,11 @@
                                         class="mdi mdi-linkedin"></i>LinkedIn</a>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+                    <p class="inline-text"><a href="{{ url('login/google') }}" class="google-btns"><img src="{{ asset('assets/images/google.png') }}">Continue with Google</a></p>
+                    <p class="inline-text"><a href="{{ url('login/facebook') }}" class="google-btns"><i class="fa fa-facebook" aria-hidden="true"></i>
+                        Continue with Facebook</a></p>
+
                 </form>
             </div>
         </div>
